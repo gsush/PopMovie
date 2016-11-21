@@ -1,7 +1,7 @@
 package com.example.android.popmovie;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -36,12 +36,13 @@ public class MainActivity extends AppCompatActivity {
                        //noinspection SimplifiableIfStatement
         if (id == R.id.most_popular) {
             // when it is clicked. The app shows the most_popular movies
-            openMostPopularMovies();
+            //openMostPopularMovies()
+
             return true;
         }
         if (id == R.id.top_rated) {
             // This should open the top_rated movies.
-            openTopRatedMovies();
+            //openTopRatedMovies();
             return true;
         }
 
