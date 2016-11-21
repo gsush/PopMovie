@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,7 +21,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Arrays;
 
 /**
  * Created by user on 11/20/2016.
@@ -44,13 +42,6 @@ public class MovieFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        // View rootview = inflater.inflate(R.layout.movie_item,container,false);
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-        flavorAdapter = new AndroidFlavorAdapter(getActivity(), Arrays.asList());
-
-        // Get a reference to the ListView, and attach this adapter to it.
-        GridView gridView = (GridView) rootView.findViewById(R.id.flavors_grid);
-        gridView.setAdapter(flavorAdapter);
         return super.onCreateView(inflater, container, savedInstanceState);
 
 
@@ -132,6 +123,9 @@ public class MovieFragment extends Fragment {
                 title = movieObject.getString(MOVIE_TITLE);
 
                 resultStrs[i]=poster;
+                String imageURl ;
+                imageURl = "https://image.tmdb.org/t/p/w185"+poster;
+
 
             }
             for (String s : resultStrs) {
