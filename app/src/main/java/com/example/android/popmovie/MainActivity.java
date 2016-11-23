@@ -1,14 +1,9 @@
 package com.example.android.popmovie;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.GridView;
-import android.widget.ListView;
-
-import static com.example.android.popmovie.MovieFragment.moviesImages;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,13 +11,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        if (savedInstanceState == null) {
-//            getFragmentManager().beginTransaction() // removed the support from the getFragmentManager
-//                    .add(R.id.fragment, new MovieFragment())
-//                    .commit();
-//        }
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction() // removed the support from the getFragmentManager
+                    .add(R.id.fragment, new MovieFragment())
+                    .commit();
+        }
 
-        ListView.setAdapter(new MoviesListAdapter(MainActivity.this, moviesImages));
+
+       // ListView.setAdapter(new MoviesListAdapter(MainActivity.this, moviesImages));
     }
 
     @Override
