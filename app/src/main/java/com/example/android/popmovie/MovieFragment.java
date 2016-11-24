@@ -101,7 +101,7 @@ public class MovieFragment extends Fragment {
                 throws JSONException {
 
             //These are the names of the json Objects that we need to be extracted
-            final String OWN_RESULT = "result"; // contains arrays of objects
+            final String OWN_RESULT = "results"; // contains arrays of objects
             final String MOVIE_POSTER = "poster_path";
             final String MOVIE_TITLE = "title";
             final String MOVIE_VOTE = "vote_average";
@@ -119,28 +119,26 @@ public class MovieFragment extends Fragment {
                 //get the JSON object representing the movies
                 JSONObject movies  = movieArray.getJSONObject(i);
 
-               // JSONObject movieObject = movies.getJSONObject(OWN_RESULT);
-
-
-
-                JSONObject movieObject = movies.getJSONObject(OWN_RESULT);
-                String poster = movieObject.getString(MOVIE_POSTER);
-                String title = movieObject.getString(MOVIE_TITLE);
-                String release_date = movieObject.getString(MOVIE_RELEASE_DATE);
-                String synopsis = movieObject.getString(MOVIE_SYNOPSIS);
-                String rating = movieObject.getString(MOVIE_VOTE);
+                String poster = movies.getString(MOVIE_POSTER);
+                String title = movies.getString(MOVIE_TITLE);
+                String release_date = movies.getString(MOVIE_RELEASE_DATE);
+                String synopsis = movies.getString(MOVIE_SYNOPSIS);
+                String rating = movies.getString(MOVIE_VOTE);
 
                 String imageURl ;
                 imageURl = "https://image.tmdb.org/t/p/w185"+poster;
-
-              //movie= new Movie(poster,title,release_date,synopsis,rating,imageURl);
+                Log.v(LOG_TAG, "url for image" + imageURl+synopsis+rating);
+                Log.v(LOG_TAG, "url for image" + title);
+                Log.v(LOG_TAG, "url for image" + release_date);
+               ;
+                //movie= new Movie(poster,title,release_date,synopsis,rating,imageURl);
                 movieArrayList.add(movie);
 
             }
             return movieArrayList;
         }
         @Override
-        protected ArrayList<Movie> doInBackground(String... voids) {
+        protected ArrayList<Movie> doInBackground(String... params) {
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
@@ -154,7 +152,7 @@ public class MovieFragment extends Fragment {
             //String language = "en-US";
             int numMov = 0;
             try {
-                // Construct the URL for the OpenWeatherMap query
+                // Construct the URL for the themoviedb query
                 // Possible parameters are avaiable at OWM's forecast API page, at
                 // http://api.themoviedb.org/3/movie
                 //to build the uri
@@ -171,7 +169,7 @@ public class MovieFragment extends Fragment {
                         //.appendPath(SHOW_VIEW)
                         .appendQueryParameter(APPID_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
                         .appendQueryParameter(LANGUAGE_PARAM, "en-US")
-                        .appendQueryParameter(SORT_BY,"popularity.desc")// by popularity and another is vote_average.desc
+                        .appendQueryParameter(SORT_BY,"popularity.desc")// by popularity and another is vote_count.desc
                         .build();
 
                 //now to link it with a url object
@@ -222,12 +220,12 @@ public class MovieFragment extends Fragment {
                         Log.e("ForecastFragment", "Error closing stream", e);
                     }
                 }
-          }//try {
-//               // return getMoviesDataFromJson(movieJsonStr,numMov);
-//            } catch (JSONException e) {
-//                Log.e(LOG_TAG, e.getMessage(), e);
-//                e.printStackTrace();
-//            }
+          }try {
+                return getMoviesDataFromJson(movieJsonStr);
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, e.getMessage(), e);
+                e.printStackTrace();
+            }
             return null;
         }
     }
