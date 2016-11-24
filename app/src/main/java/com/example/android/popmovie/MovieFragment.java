@@ -133,7 +133,7 @@ public class MovieFragment extends Fragment {
                 String imageURl ;
                 imageURl = "https://image.tmdb.org/t/p/w185"+poster;
 
-               movie= new Movie(poster,title,release_date,synopsis,rating,imageURl);
+              //movie= new Movie(poster,title,release_date,synopsis,rating,imageURl);
                 movieArrayList.add(movie);
 
             }
@@ -150,8 +150,8 @@ public class MovieFragment extends Fragment {
             String movieJsonStr = null;
 
             // define the values of the constants
-            String popular = "popular";
-            String language = "en-US";
+           // String popular = "popular";
+            //String language = "en-US";
             int numMov = 0;
             try {
                 // Construct the URL for the OpenWeatherMap query
@@ -159,17 +159,19 @@ public class MovieFragment extends Fragment {
                 // http://api.themoviedb.org/3/movie
                 //to build the uri
                 final String MOVIE_BASE_URL =
-                        "https://api.themoviedb.org/3/movie/";
-                final String SHOW_VIEW = "popular";
+                        "https://api.themoviedb.org/3/discover/movie?";
+               // final String SHOW_VIEW = "popular";
                 final String APPID_PARAM = "api_key";
                 final String LANGUAGE_PARAM = "language";
+                final String SORT_BY ="sort_by";
 
                 // now how to use it in the uri.builder class
                 Uri builtUri = Uri.parse(MOVIE_BASE_URL)
                         .buildUpon()
-                        .appendPath(SHOW_VIEW)
+                        //.appendPath(SHOW_VIEW)
                         .appendQueryParameter(APPID_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
                         .appendQueryParameter(LANGUAGE_PARAM, "en-US")
+                        .appendQueryParameter(SORT_BY,"popularity.desc")// by popularity and another is vote_average.desc
                         .build();
 
                 //now to link it with a url object
@@ -220,12 +222,12 @@ public class MovieFragment extends Fragment {
                         Log.e("ForecastFragment", "Error closing stream", e);
                     }
                 }
-            }try {
-                return getMoviesDataFromJson(movieJsonStr,numMov);
-            } catch (JSONException e) {
-                Log.e(LOG_TAG, e.getMessage(), e);
-                e.printStackTrace();
-            }
+          }//try {
+//               // return getMoviesDataFromJson(movieJsonStr,numMov);
+//            } catch (JSONException e) {
+//                Log.e(LOG_TAG, e.getMessage(), e);
+//                e.printStackTrace();
+//            }
             return null;
         }
     }
