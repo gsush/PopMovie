@@ -1,5 +1,6 @@
 package com.example.android.popmovie;
 
+import android.graphics.Movie;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,12 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -82,66 +88,59 @@ public class MovieFragment extends Fragment {
 
 
 
-    public class FetchMoviesTask extends AsyncTask<Void,Void,Void> {
+    public class FetchMoviesTask extends AsyncTask<String,Void, ArrayList<Movie>> {
       private final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
-//        /**
-//         * Take the String representing the complete forecast in JSON Format and
-//         * pull out the data we need to construct the Strings needed for the wireframes.
-//         * <p>
-//         * Fortunately parsing is easy:  constructor takes the JSON string and converts it
-//         * into an Object hierarchy for us.
-//         */
-//        private String[] getMoviesDataFromJson(String moviesJsonStr , int numMov) throws JSONException{
-//
-//            //These are the names of the json Objects that we need to be extracted
-//            final String OWN_RESULT = "result"; // contains arrays of objects
-//            final String MOVIE_POSTER = "poster_path";
-//            final String MOVIE_TITLE = "title";
-//            final String MOVIE_VOTE = "vote_average";
-//            final String MOVIE_SYNOPSIS = "overview";
-//            final String MOVIE_RELEASE_DATE = "release_date";
-//
-//            // this will call the data that is being in the result of the json
-//            JSONObject movieJson = new JSONObject(moviesJsonStr);
-//            JSONArray movieArray = movieJson.getJSONArray(OWN_RESULT);
-//            String[] resultStrs = new String[numMov];
-//
-//            for (int i = 0; i < movieArray.length();i++){
-//                // the format is poster,title,release data,synopsis and rating
-//                String poster;
-//                String title;
-//                String release_date;
-//                String synopsis;
-//                String rating;
-//
-//                //get the JSON object representing the movies
-//                JSONObject movies  = movieArray.getJSONObject(i);
-//
-//               // JSONObject movieObject = movies.getJSONObject(OWN_RESULT);
-//
-//
-//                JSONObject movieObject = movies.getJSONObject(OWN_RESULT);
-//                poster = movieObject.getString(MOVIE_POSTER);
-//
-//                title = movieObject.getString(MOVIE_TITLE);
-//                release_date = movieObject.getString(MOVIE_RELEASE_DATE);
-//                synopsis = movieObject.getString(MOVIE_SYNOPSIS);
-//                rating = movieObject.getString(MOVIE_VOTE);
-//                title = movieObject.getString(MOVIE_TITLE);
-//
-//                resultStrs[i]=poster;
-//                String imageURl ;
-//                imageURl = "https://image.tmdb.org/t/p/w185"+poster;
-//
-//
-//            }
-//            for (String s : resultStrs) {
-//                Log.v(LOG_TAG, "Result entry: " + s);
-//            }
-//            return resultStrs;
-//        }
+        /**
+         * Take the String representing the complete forecast in JSON Format and
+         * pull out the data we need to construct the Strings needed for the wireframes.
+         * <p>
+         * Fortunately parsing is easy:  constructor takes the JSON string and converts it
+         * into an Object hierarchy for us.
+         */
+        private  ArrayList<Movie> getMoviesDataFromJson(String moviesJsonStr)
+                throws JSONException {
+
+            //These are the names of the json Objects that we need to be extracted
+            final String OWN_RESULT = "result"; // contains arrays of objects
+            final String MOVIE_POSTER = "poster_path";
+            final String MOVIE_TITLE = "title";
+            final String MOVIE_VOTE = "vote_average";
+            final String MOVIE_SYNOPSIS = "overview";
+            final String MOVIE_RELEASE_DATE = "release_date";
+
+            // this will call the data that is being in the result of the json
+            JSONObject movieJson = new JSONObject(moviesJsonStr);
+            JSONArray movieArray = movieJson.getJSONArray(OWN_RESULT);
+
+            ArrayList<Movie> movieArrayList = new ArrayList<>();
+            Movie movie = null;
+            for (int i = 0; i < movieArray.length();i++){
+
+                //get the JSON object representing the movies
+                JSONObject movies  = movieArray.getJSONObject(i);
+
+               // JSONObject movieObject = movies.getJSONObject(OWN_RESULT);
+
+
+
+                JSONObject movieObject = movies.getJSONObject(OWN_RESULT);
+                String poster = movieObject.getString(MOVIE_POSTER);
+                String title = movieObject.getString(MOVIE_TITLE);
+                String release_date = movieObject.getString(MOVIE_RELEASE_DATE);
+                String synopsis = movieObject.getString(MOVIE_SYNOPSIS);
+                String rating = movieObject.getString(MOVIE_VOTE);
+
+                String imageURl ;
+                imageURl = "https://image.tmdb.org/t/p/w185"+poster;
+
+               movie= new Movie(poster,title,release_date,synopsis,rating,imageURl);
+                movieArrayList.add(movie);
+
+            }
+            return movieArrayList;
+        }
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected ArrayList<Movie> doInBackground(String... voids) {
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
@@ -153,10 +152,11 @@ public class MovieFragment extends Fragment {
             // define the values of the constants
             String popular = "popular";
             String language = "en-US";
+            int numMov = 0;
             try {
                 // Construct the URL for the OpenWeatherMap query
                 // Possible parameters are avaiable at OWM's forecast API page, at
-                // http://openweathermap.org/API#forecast
+                // http://api.themoviedb.org/3/movie
                 //to build the uri
                 final String MOVIE_BASE_URL =
                         "https://api.themoviedb.org/3/movie/";
@@ -220,6 +220,11 @@ public class MovieFragment extends Fragment {
                         Log.e("ForecastFragment", "Error closing stream", e);
                     }
                 }
+            }try {
+                return getMoviesDataFromJson(movieJsonStr,numMov);
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, e.getMessage(), e);
+                e.printStackTrace();
             }
             return null;
         }
