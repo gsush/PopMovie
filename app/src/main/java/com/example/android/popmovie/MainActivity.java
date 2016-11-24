@@ -1,21 +1,27 @@
 package com.example.android.popmovie;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction() // removed the support from the getFragmentManager
+            getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment, new MovieFragment())
                     .commit();
         }
+//        if (savedInstanceState == null) {
+//            getFragmentManager().beginTransaction() // removed the support from the getFragmentManager
+//                    .add(R.id.fragment, new MovieFragment())
+//                    .commit();
+//        }
+
 
 
        // ListView.setAdapter(new MoviesListAdapter(MainActivity.this, moviesImages));

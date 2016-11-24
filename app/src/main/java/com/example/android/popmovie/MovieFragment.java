@@ -1,20 +1,18 @@
 package com.example.android.popmovie;
 
-import android.app.Fragment;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,7 +28,33 @@ import java.util.Arrays;
 
 public class MovieFragment extends Fragment {
     private  MoviesListAdapter listmovies;
+    public MovieFragment() {
 
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);// this will give the permission for the refresh button to inflate.
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.moviefragment,menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_refresh) {
+            FetchMoviesTask fetchMoviesTask = new FetchMoviesTask();
+            fetchMoviesTask.execute();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
     public static MovieList[] movieList = {
                         new MovieList(R.drawable.cupcake),new MovieList(R.drawable.donut),
             new MovieList(R.drawable.eclair),new MovieList(R.drawable.froyo),
@@ -38,9 +62,7 @@ public class MovieFragment extends Fragment {
             new MovieList(R.drawable.icecream),new MovieList(R.drawable.jellybean),
             new MovieList(R.drawable.kitkat),new MovieList(R.drawable.lollipop),
     };
-    public MovieFragment() {
 
-    }
 
     @Nullable
     @Override
@@ -52,99 +74,74 @@ public class MovieFragment extends Fragment {
         GridView gridView = (GridView) rootview.findViewById(R.id.flavors_grid);
         gridView.setAdapter(listmovies);
 
+
         return rootview;
 
 
     }
 
-    @Override
-    public void onStart() {
-        // this method is called by default on the start of the app .
-        super.onStart();
-        updateMovies();
-    }
-
-    private void updateMovies() {
-        FetchMoviesTask moviesTask = new FetchMoviesTask();
-        moviesTask.execute();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.most_popular) {
-            //mostPopularMovies();
-            FetchMoviesTask moviesTask = new FetchMoviesTask();
-            moviesTask.execute();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-
-    }
-
-    public class FetchMoviesTask extends AsyncTask<Void,Void,String>{
-        private final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
-        /**
-         * Take the String representing the complete forecast in JSON Format and
-         * pull out the data we need to construct the Strings needed for the wireframes.
-         * <p>
-         * Fortunately parsing is easy:  constructor takes the JSON string and converts it
-         * into an Object hierarchy for us.
-         */
-        private String[] getMoviesDataFromJson(String moviesJsonStr , int numMov) throws JSONException{
-
-            //These are the names of the json Objects that we need to be extracted
-            final String OWN_RESULT = "result"; // contains arrays of objects
-            final String MOVIE_POSTER = "poster_path";
-            final String MOVIE_TITLE = "title";
-            final String MOVIE_VOTE = "vote_average";
-            final String MOVIE_SYNOPSIS = "overview";
-            final String MOVIE_RELEASE_DATE = "release_date";
-
-            // this will call the data that is being in the result of the json
-            JSONObject movieJson = new JSONObject(moviesJsonStr);
-            JSONArray movieArray = movieJson.getJSONArray(OWN_RESULT);
-            String[] resultStrs = new String[numMov];
-
-            for (int i = 0; i < movieArray.length();i++){
-                // the format is poster,title,release data,synopsis and rating
-                String poster;
-                String title;
-                String release_date;
-                String synopsis;
-                String rating;
-
-                //get the JSON object representing the movies
-                JSONObject movies  = movieArray.getJSONObject(i);
-
-               // JSONObject movieObject = movies.getJSONObject(OWN_RESULT);
 
 
-                JSONObject movieObject = movies.getJSONObject(OWN_RESULT);
-                poster = movieObject.getString(MOVIE_POSTER);
-
-                title = movieObject.getString(MOVIE_TITLE);
-                release_date = movieObject.getString(MOVIE_RELEASE_DATE);
-                synopsis = movieObject.getString(MOVIE_SYNOPSIS);
-                rating = movieObject.getString(MOVIE_VOTE);
-                title = movieObject.getString(MOVIE_TITLE);
-
-                resultStrs[i]=poster;
-                String imageURl ;
-                imageURl = "https://image.tmdb.org/t/p/w185"+poster;
-
-
-            }
-            for (String s : resultStrs) {
-                Log.v(LOG_TAG, "Result entry: " + s);
-            }
-            return resultStrs;
-        }
+    public class FetchMoviesTask extends AsyncTask<Void,Void,Void> {
+      private final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
+//        /**
+//         * Take the String representing the complete forecast in JSON Format and
+//         * pull out the data we need to construct the Strings needed for the wireframes.
+//         * <p>
+//         * Fortunately parsing is easy:  constructor takes the JSON string and converts it
+//         * into an Object hierarchy for us.
+//         */
+//        private String[] getMoviesDataFromJson(String moviesJsonStr , int numMov) throws JSONException{
+//
+//            //These are the names of the json Objects that we need to be extracted
+//            final String OWN_RESULT = "result"; // contains arrays of objects
+//            final String MOVIE_POSTER = "poster_path";
+//            final String MOVIE_TITLE = "title";
+//            final String MOVIE_VOTE = "vote_average";
+//            final String MOVIE_SYNOPSIS = "overview";
+//            final String MOVIE_RELEASE_DATE = "release_date";
+//
+//            // this will call the data that is being in the result of the json
+//            JSONObject movieJson = new JSONObject(moviesJsonStr);
+//            JSONArray movieArray = movieJson.getJSONArray(OWN_RESULT);
+//            String[] resultStrs = new String[numMov];
+//
+//            for (int i = 0; i < movieArray.length();i++){
+//                // the format is poster,title,release data,synopsis and rating
+//                String poster;
+//                String title;
+//                String release_date;
+//                String synopsis;
+//                String rating;
+//
+//                //get the JSON object representing the movies
+//                JSONObject movies  = movieArray.getJSONObject(i);
+//
+//               // JSONObject movieObject = movies.getJSONObject(OWN_RESULT);
+//
+//
+//                JSONObject movieObject = movies.getJSONObject(OWN_RESULT);
+//                poster = movieObject.getString(MOVIE_POSTER);
+//
+//                title = movieObject.getString(MOVIE_TITLE);
+//                release_date = movieObject.getString(MOVIE_RELEASE_DATE);
+//                synopsis = movieObject.getString(MOVIE_SYNOPSIS);
+//                rating = movieObject.getString(MOVIE_VOTE);
+//                title = movieObject.getString(MOVIE_TITLE);
+//
+//                resultStrs[i]=poster;
+//                String imageURl ;
+//                imageURl = "https://image.tmdb.org/t/p/w185"+poster;
+//
+//
+//            }
+//            for (String s : resultStrs) {
+//                Log.v(LOG_TAG, "Result entry: " + s);
+//            }
+//            return resultStrs;
+//        }
         @Override
-        protected String doInBackground(Void... voids) {
+        protected Void doInBackground(Void... voids) {
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
@@ -162,13 +159,15 @@ public class MovieFragment extends Fragment {
                 // http://openweathermap.org/API#forecast
                 //to build the uri
                 final String MOVIE_BASE_URL =
-                        "https://api.themoviedb.org/3/movie/popular?";
+                        "https://api.themoviedb.org/3/movie/";
+                final String SHOW_VIEW = "popular";
                 final String APPID_PARAM = "api_key";
                 final String LANGUAGE_PARAM = "language";
 
                 // now how to use it in the uri.builder class
                 Uri builtUri = Uri.parse(MOVIE_BASE_URL)
                         .buildUpon()
+                        .appendPath(SHOW_VIEW)
                         .appendQueryParameter(APPID_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
                         .appendQueryParameter(LANGUAGE_PARAM, "en-US")
                         .build();
