@@ -13,7 +13,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,6 +81,13 @@ public class MovieFragment extends Fragment {
         // Get a reference to the ListView, and attach this adapter to it.
         GridView gridView = (GridView) rootview.findViewById(R.id.flavors_grid);
         gridView.setAdapter(listmovies);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                MovieList forecast = listmovies.getItem(position);
+                Toast.makeText(getActivity(),forecast,Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
         return rootview;
@@ -97,7 +106,7 @@ public class MovieFragment extends Fragment {
          * Fortunately parsing is easy:  constructor takes the JSON string and converts it
          * into an Object hierarchy for us.
          */
-        private  ArrayList<Movie> getMoviesDataFromJson(String moviesJsonStr)
+        public ArrayList<Movie> getMoviesDataFromJson(String moviesJsonStr)
                 throws JSONException {
 
             //These are the names of the json Objects that we need to be extracted
@@ -111,9 +120,10 @@ public class MovieFragment extends Fragment {
             // this will call the data that is being in the result of the json
             JSONObject movieJson = new JSONObject(moviesJsonStr);
             JSONArray movieArray = movieJson.getJSONArray(OWN_RESULT);
+            String imageURl = null;
 
             ArrayList<Movie> movieArrayList = new ArrayList<>();
-            Movie movie = null;
+           MovieList[] movie = null;
             for (int i = 0; i < movieArray.length();i++){
 
                 //get the JSON object representing the movies
@@ -125,18 +135,31 @@ public class MovieFragment extends Fragment {
                 String synopsis = movies.getString(MOVIE_SYNOPSIS);
                 String rating = movies.getString(MOVIE_VOTE);
 
-                String imageURl ;
+
                 imageURl = "https://image.tmdb.org/t/p/w185"+poster;
-                Log.v(LOG_TAG, "url for image" + imageURl+synopsis+rating);
-                Log.v(LOG_TAG, "url for image" + title);
-                Log.v(LOG_TAG, "url for image" + release_date);
-               ;
+                Log.v(LOG_TAG, "url for image: " + imageURl);
+                Log.v(LOG_TAG, "Title: " + title);
+                Log.v(LOG_TAG, "release date: " + release_date);
+                Log.v(LOG_TAG, "rating: " + rating);
+                Log.v(LOG_TAG, "synopsis: " + synopsis);
+
                 //movie= new Movie(poster,title,release_date,synopsis,rating,imageURl);
-                movieArrayList.add(movie);
+               // movieArrayList[i] = new movie(imageURl);
 
             }
-            return movieArrayList;
+            return null;
         }
+
+        @Override
+        protected void onPostExecute(ArrayList<Movie> movies) {
+//            if (movies != null) {
+//                listmovies.clear(); // first we clear all the previous entry
+//                for(Movie dayForecastStr : movieList) { // then we add each forecast entery one by one
+//                    listmovies.add(dayForecastStr); // from the server to the adapter.
+//                }
+//            }
+        }
+
         @Override
         protected ArrayList<Movie> doInBackground(String... params) {
             // These two need to be declared outside the try/catch
