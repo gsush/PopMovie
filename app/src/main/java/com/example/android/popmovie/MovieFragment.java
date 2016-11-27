@@ -162,7 +162,7 @@ public class MovieFragment extends Fragment {
             BufferedReader reader = null;
 
             // Will contain the raw JSON response as a string.
-            String movieJsonStr = null;
+            ArrayList<MovieList> movieJsonStr = null;
 
             // define the values of the constants
            // String popular = "popular";
@@ -192,6 +192,7 @@ public class MovieFragment extends Fragment {
                 //now to link it with a url object
                 URL url = new URL(builtUri.toString());
                 Log.v(LOG_TAG, "Built uri" + builtUri.toString());
+
 
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -238,7 +239,7 @@ public class MovieFragment extends Fragment {
                     }
                 }
           }try {
-                return getMoviesDataFromJson(movieArrayList);
+                return getMoviesDataFromJson(movieJsonStr);
             } catch (JSONException e) {
                 Log.e(LOG_TAG, e.getMessage(), e);
                 e.printStackTrace();
