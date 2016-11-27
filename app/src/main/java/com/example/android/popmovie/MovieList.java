@@ -6,8 +6,12 @@ package com.example.android.popmovie;
 
 public class MovieList {
     int image;
+    String imageURl;
 
     public MovieList(int image) {
         this.image = image;
+    }
+    public MovieList(String imageurl) {
+        this.imageURl = imageurl;
     }
 }

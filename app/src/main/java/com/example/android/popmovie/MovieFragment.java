@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,6 +35,7 @@ import java.util.Arrays;
 
 public class MovieFragment extends Fragment {
     private  MoviesListAdapter listmovies;
+    ArrayList<String> movieArrayList = new ArrayList<String>();
     public MovieFragment() {
 
     }
@@ -85,7 +85,7 @@ public class MovieFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 MovieList forecast = listmovies.getItem(position);
-                Toast.makeText(getActivity(),forecast,Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getActivity(),forecast,Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -106,7 +106,7 @@ public class MovieFragment extends Fragment {
          * Fortunately parsing is easy:  constructor takes the JSON string and converts it
          * into an Object hierarchy for us.
          */
-        public ArrayList<Movie> getMoviesDataFromJson(String moviesJsonStr)
+        public ArrayList<String> getMoviesDataFromJson(String moviesJsonStr)
                 throws JSONException {
 
             //These are the names of the json Objects that we need to be extracted
@@ -122,8 +122,8 @@ public class MovieFragment extends Fragment {
             JSONArray movieArray = movieJson.getJSONArray(OWN_RESULT);
             String imageURl = null;
 
-            ArrayList<Movie> movieArrayList = new ArrayList<>();
-           MovieList[] movie = null;
+
+
             for (int i = 0; i < movieArray.length();i++){
 
                 //get the JSON object representing the movies
@@ -144,21 +144,15 @@ public class MovieFragment extends Fragment {
                 Log.v(LOG_TAG, "synopsis: " + synopsis);
 
                 //movie= new Movie(poster,title,release_date,synopsis,rating,imageURl);
-               // movieArrayList[i] = new movie(imageURl);
+               movieArrayList.add(imageURl);
+                //movieArrayList.add(title);
+               // return imageURl;
 
             }
-            return null;
+            return movieArrayList;
         }
 
-        @Override
-        protected void onPostExecute(ArrayList<Movie> movies) {
-//            if (movies != null) {
-//                listmovies.clear(); // first we clear all the previous entry
-//                for(Movie dayForecastStr : movieList) { // then we add each forecast entery one by one
-//                    listmovies.add(dayForecastStr); // from the server to the adapter.
-//                }
-//            }
-        }
+
 
         @Override
         protected ArrayList<Movie> doInBackground(String... params) {
@@ -244,12 +238,22 @@ public class MovieFragment extends Fragment {
                     }
                 }
           }try {
-                return getMoviesDataFromJson(movieJsonStr);
+                return getMoviesDataFromJson(movieArrayList);
             } catch (JSONException e) {
                 Log.e(LOG_TAG, e.getMessage(), e);
                 e.printStackTrace();
             }
             return null;
         }
+//        @Override
+//        protected void onPostExecute(ArrayList<String> movies) {
+//            if (movies != null) {
+//                movieArrayList.clear(); // first we clear all the previous entry
+//                for(String dayForecastStr : movieArrayList) { // then we add each forecast entery one by one
+//                    movieArrayList.add(dayForecastStr); // from the server to the adapter.
+//                }
+//            }
+//        }
+
     }
 }

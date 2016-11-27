@@ -41,7 +41,7 @@ public class MoviesListAdapter extends ArrayAdapter<MovieList> {
         }
         ImageView posterView = (ImageView) convertView.findViewById(R.id.flavor_image);
         Picasso.with(getContext()).load("https://image.tmdb.org/t/p/w185/zSouWWrySXshPCT4t3UKCQGayyo.jpg").into(posterView);
-        //Picasso.with(getContext()).load(MovieFragment.movieList).into(posterView);
+        //Picasso.with(getContext()).load().into(posterView);
        // posterView.setImageResource(MoviesListAdapter.imageUrls);
 
 
