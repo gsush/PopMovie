@@ -9,8 +9,6 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-
 /**
  * Created by user on 11/21/2016.
  */
@@ -18,12 +16,12 @@ import java.util.List;
 
 public class MoviesListAdapter extends ArrayAdapter<MovieList> {
 
-    public MoviesListAdapter(Context context, List<MovieList> movieList) {
+    public MoviesListAdapter(Context context, int resources) {
         // Here, we initialize the ArrayAdapter's internal storage for the context and the list.
         // the second argument is used when the ArrayAdapter is populating a single TextView.
         // Because this is a custom adapter for two TextViews and an ImageView, the adapter is not
         // going to use this second argument, so it can be any value. Here, we used 0.
-        super(context, 0, movieList);
+        super(context, 0, resources);
     }
     // private String[] imageUrls;
 
@@ -40,8 +38,8 @@ public class MoviesListAdapter extends ArrayAdapter<MovieList> {
 
         }
         ImageView posterView = (ImageView) convertView.findViewById(R.id.flavor_image);
-        Picasso.with(getContext()).load("https://image.tmdb.org/t/p/w185/zSouWWrySXshPCT4t3UKCQGayyo.jpg").into(posterView);
-        //Picasso.with(getContext()).load().into(posterView);
+       // Picasso.with(getContext()).load("https://image.tmdb.org/t/p/w185/zSouWWrySXshPCT4t3UKCQGayyo.jpg").into(posterView);
+        Picasso.with(getContext()).load(moviesList.getImageurl()).into(posterView);
        // posterView.setImageResource(MoviesListAdapter.imageUrls);
 
 

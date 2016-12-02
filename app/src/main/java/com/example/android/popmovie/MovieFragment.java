@@ -1,11 +1,9 @@
 package com.example.android.popmovie;
 
-import android.graphics.Movie;
+import android.app.Fragment;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.GridView;
 
 import org.json.JSONArray;
@@ -27,15 +24,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by user on 11/20/2016.
  */
 
 public class MovieFragment extends Fragment {
-    private  MoviesListAdapter listmovies;
-    ArrayList<String> movieArrayList = new ArrayList<String>();
+    private GridView mListMovies;
+    private MoviesListAdapter mAdapter;
     public MovieFragment() {
 
     }
@@ -63,31 +60,26 @@ public class MovieFragment extends Fragment {
         return super.onOptionsItemSelected(item);
 
     }
-    public static MovieList[] movieList = {
-                        new MovieList(R.drawable.cupcake),new MovieList(R.drawable.donut),
-            new MovieList(R.drawable.eclair),new MovieList(R.drawable.froyo),
-            new MovieList(R.drawable.gingerbread),new MovieList(R.drawable.honeycomb),
-            new MovieList(R.drawable.icecream),new MovieList(R.drawable.jellybean),
-            new MovieList(R.drawable.kitkat),new MovieList(R.drawable.lollipop),
-    };
 
 
-    @Nullable
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootview = inflater.inflate(R.layout.fragment_main,container,false);
-        listmovies = new MoviesListAdapter(getActivity(), Arrays.asList(movieList));
+        //listmovies = new MoviesListAdapter(getActivity(), Arrays.asList(MovieList));
 
         // Get a reference to the ListView, and attach this adapter to it.
-        GridView gridView = (GridView) rootview.findViewById(R.id.flavors_grid);
-        gridView.setAdapter(listmovies);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                MovieList forecast = listmovies.getItem(position);
-               // Toast.makeText(getActivity(),forecast,Toast.LENGTH_SHORT).show();
-            }
-        });
+        mAdapter = new MoviesListAdapter(getContext(),R.layout.movie_item);
+        mListMovies = (GridView) getView().findViewById(R.id.flavors_grid);
+        mListMovies.setAdapter(mAdapter);
+//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                MovieList forecast = mMovieAdapter.getItem(position);
+//               // Toast.makeText(getActivity(),forecast,Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
 
         return rootview;
@@ -97,7 +89,7 @@ public class MovieFragment extends Fragment {
 
 
 
-    public class FetchMoviesTask extends AsyncTask<String,Void, ArrayList<Movie>> {
+    public class FetchMoviesTask extends AsyncTask<Object, Void, String[]> {
       private final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
         /**
          * Take the String representing the complete forecast in JSON Format and
@@ -106,7 +98,7 @@ public class MovieFragment extends Fragment {
          * Fortunately parsing is easy:  constructor takes the JSON string and converts it
          * into an Object hierarchy for us.
          */
-        public ArrayList<String> getMoviesDataFromJson(String moviesJsonStr)
+        public String[] getMoviesDataFromJson(String moviesJsonStr)
                 throws JSONException {
 
             //These are the names of the json Objects that we need to be extracted
@@ -116,6 +108,9 @@ public class MovieFragment extends Fragment {
             final String MOVIE_VOTE = "vote_average";
             final String MOVIE_SYNOPSIS = "overview";
             final String MOVIE_RELEASE_DATE = "release_date";
+
+            String[] resultStr = new String[0];
+            List<MovieList> moviesdata = new ArrayList<>();
 
             // this will call the data that is being in the result of the json
             JSONObject movieJson = new JSONObject(moviesJsonStr);
@@ -131,9 +126,9 @@ public class MovieFragment extends Fragment {
 
                 String poster = movies.getString(MOVIE_POSTER);
                 String title = movies.getString(MOVIE_TITLE);
-                String release_date = movies.getString(MOVIE_RELEASE_DATE);
+                long release_date = movies.getLong(MOVIE_RELEASE_DATE);
                 String synopsis = movies.getString(MOVIE_SYNOPSIS);
-                String rating = movies.getString(MOVIE_VOTE);
+                double rating = movies.getDouble(MOVIE_VOTE);
 
 
                 imageURl = "https://image.tmdb.org/t/p/w185"+poster;
@@ -144,25 +139,28 @@ public class MovieFragment extends Fragment {
                 Log.v(LOG_TAG, "synopsis: " + synopsis);
 
                 //movie= new Movie(poster,title,release_date,synopsis,rating,imageURl);
-               movieArrayList.add(imageURl);
+              // movieArrayList.add(imageURl);
                 //movieArrayList.add(title);
                // return imageURl;
+                MovieList movieList = new MovieList(poster,title,release_date,synopsis,rating);
+                moviesdata.add(movieList);
+                resultStr[i]= imageURl;
 
             }
-            return movieArrayList;
+            return resultStr;
         }
 
 
 
         @Override
-        protected ArrayList<Movie> doInBackground(String... params) {
+        protected String[] doInBackground(Object... params) {
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
 
             // Will contain the raw JSON response as a string.
-            ArrayList<MovieList> movieJsonStr = null;
+            String movieJsonStr = null;
 
             // define the values of the constants
            // String popular = "popular";
@@ -246,15 +244,15 @@ public class MovieFragment extends Fragment {
             }
             return null;
         }
-//        @Override
-//        protected void onPostExecute(ArrayList<String> movies) {
-//            if (movies != null) {
-//                movieArrayList.clear(); // first we clear all the previous entry
-//                for(String dayForecastStr : movieArrayList) { // then we add each forecast entery one by one
-//                    movieArrayList.add(dayForecastStr); // from the server to the adapter.
-//                }
-//            }
-//        }
+        @Override
+        protected void onPostExecute(String[] movies) {
+            if (movies != null) {
+                mAdapter.clear(); // first we clear all the previous entry
+                for(String movieForecastStr : movies) { // then we add each forecast entery one by one
+                   // mAdapter.add(movieForecastStr); // from the server to the adapter.
+                }
+            }
+        }
 
     }
 }

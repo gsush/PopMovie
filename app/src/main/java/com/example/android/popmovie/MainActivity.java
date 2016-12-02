@@ -11,16 +11,16 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment, new MovieFragment())
-                    .commit();
-        }
 //        if (savedInstanceState == null) {
-//            getFragmentManager().beginTransaction() // removed the support from the getFragmentManager
+//            getSupportFragmentManager().beginTransaction()
 //                    .add(R.id.fragment, new MovieFragment())
 //                    .commit();
 //        }
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction() // removed the support from the getFragmentManager
+                    .add(R.id.fragment, new MovieFragment())
+                    .commit();
+        }
 
 
 
