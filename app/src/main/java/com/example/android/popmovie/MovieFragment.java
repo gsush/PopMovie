@@ -1,9 +1,9 @@
 package com.example.android.popmovie;
 
-import android.app.Fragment;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,7 +11,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +35,7 @@ import java.util.List;
 
 public class MovieFragment extends Fragment {
     private GridView mListMovies;
-    private MoviesListAdapter mAdapter;
+    private ArrayAdapter<MovieList> mAdapter;
     public MovieFragment() {
 
     }
@@ -70,26 +73,28 @@ public class MovieFragment extends Fragment {
         //listmovies = new MoviesListAdapter(getActivity(), Arrays.asList(MovieList));
 
         // Get a reference to the ListView, and attach this adapter to it.
+//        mAdapter = new MoviesListAdapter(getActivity(),
+//                R.layout.movie_item,
+//                R.id.flavor_image,
+//                new ArrayList<String>());
         mAdapter = new MoviesListAdapter(getContext(),R.layout.movie_item);
-        mListMovies = (GridView) getView().findViewById(R.id.flavors_grid);
-        mListMovies.setAdapter(mAdapter);
-//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                MovieList forecast = mMovieAdapter.getItem(position);
-//               // Toast.makeText(getActivity(),forecast,Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
-
+         GridView gridView = (GridView) rootview.findViewById(R.id.flavors_grid);
+        gridView.setAdapter(mAdapter);
+       /* mListMovies = (GridView) getView().findViewById(R.id.flavors_grid);
+        mListMovies.setAdapter(mAdapter);*/
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                MovieList forecast = mAdapter.getItem(position);
+                Toast.makeText(getActivity(), (CharSequence) forecast,Toast.LENGTH_SHORT).show();
+            }
+        });
         return rootview;
-
-
     }
 
 
 
-    public class FetchMoviesTask extends AsyncTask<Object, Void, String[]> {
+    public class FetchMoviesTask extends AsyncTask<Object, Void, List<MovieList>> {
       private final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
         /**
          * Take the String representing the complete forecast in JSON Format and
@@ -98,7 +103,7 @@ public class MovieFragment extends Fragment {
          * Fortunately parsing is easy:  constructor takes the JSON string and converts it
          * into an Object hierarchy for us.
          */
-        public String[] getMoviesDataFromJson(String moviesJsonStr)
+        public List<MovieList> getMoviesDataFromJson(String moviesJsonStr)
                 throws JSONException {
 
             //These are the names of the json Objects that we need to be extracted
@@ -109,29 +114,29 @@ public class MovieFragment extends Fragment {
             final String MOVIE_SYNOPSIS = "overview";
             final String MOVIE_RELEASE_DATE = "release_date";
 
-            String[] resultStr = new String[0];
+            //String[] resultStr = new String[20];
             List<MovieList> moviesdata = new ArrayList<>();
 
             // this will call the data that is being in the result of the json
             JSONObject movieJson = new JSONObject(moviesJsonStr);
             JSONArray movieArray = movieJson.getJSONArray(OWN_RESULT);
-            String imageURl = null;
+            String imageURl;
 
 
 
             for (int i = 0; i < movieArray.length();i++){
 
-                //get the JSON object representing the movies
+                //get the JSON object representing the movies of the single movie
                 JSONObject movies  = movieArray.getJSONObject(i);
 
                 String poster = movies.getString(MOVIE_POSTER);
                 String title = movies.getString(MOVIE_TITLE);
-                long release_date = movies.getLong(MOVIE_RELEASE_DATE);
+                String release_date = movies.getString(MOVIE_RELEASE_DATE);
                 String synopsis = movies.getString(MOVIE_SYNOPSIS);
-                double rating = movies.getDouble(MOVIE_VOTE);
+                String rating = movies.getString(MOVIE_VOTE);
 
 
-                imageURl = "https://image.tmdb.org/t/p/w185"+poster;
+               imageURl = "https://image.tmdb.org/t/p/w185"+poster;
                 Log.v(LOG_TAG, "url for image: " + imageURl);
                 Log.v(LOG_TAG, "Title: " + title);
                 Log.v(LOG_TAG, "release date: " + release_date);
@@ -142,18 +147,18 @@ public class MovieFragment extends Fragment {
               // movieArrayList.add(imageURl);
                 //movieArrayList.add(title);
                // return imageURl;
-                MovieList movieList = new MovieList(poster,title,release_date,synopsis,rating);
+                MovieList movieList = new MovieList(poster);//,title,release_date,synopsis,rating);
                 moviesdata.add(movieList);
-                resultStr[i]= imageURl;
+                //resultStr[i]= imageURl;
 
             }
-            return resultStr;
+            return moviesdata;
         }
 
 
 
         @Override
-        protected String[] doInBackground(Object... params) {
+        protected List<MovieList> doInBackground(Object... params) {
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
@@ -245,11 +250,11 @@ public class MovieFragment extends Fragment {
             return null;
         }
         @Override
-        protected void onPostExecute(String[] movies) {
+        protected void onPostExecute(List<MovieList> movies) {
             if (movies != null) {
                 mAdapter.clear(); // first we clear all the previous entry
-                for(String movieForecastStr : movies) { // then we add each forecast entery one by one
-                   // mAdapter.add(movieForecastStr); // from the server to the adapter.
+                for(MovieList movieForecastStr : movies) { // then we add each forecast entery one by one
+                   mAdapter.add(movieForecastStr); // from the server to the adapter.
                 }
             }
         }
