@@ -147,7 +147,7 @@ public class MovieFragment extends Fragment {
               // movieArrayList.add(imageURl);
                 //movieArrayList.add(title);
                // return imageURl;
-                MovieList movieList = new MovieList(poster);//,title,release_date,synopsis,rating);
+                MovieList movieList = new MovieList(imageURl);//,title,release_date,synopsis,rating);
                 moviesdata.add(movieList);
                 //resultStr[i]= imageURl;
 

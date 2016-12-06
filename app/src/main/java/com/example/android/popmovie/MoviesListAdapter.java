@@ -1,6 +1,8 @@
 package com.example.android.popmovie;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import com.squareup.picasso.Picasso;
 
 
 public class MoviesListAdapter extends ArrayAdapter<MovieList> {
+    private final String LOG_TAG = MoviesListAdapter.class.getSimpleName();
 
     public MoviesListAdapter(Context context, int resources) {
         // Here, we initialize the ArrayAdapter's internal storage for the context and the list.
@@ -27,7 +30,7 @@ public class MoviesListAdapter extends ArrayAdapter<MovieList> {
 
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
         MovieList moviesList = getItem(position);
 
@@ -39,7 +42,8 @@ public class MoviesListAdapter extends ArrayAdapter<MovieList> {
         }
         ImageView posterView = (ImageView) convertView.findViewById(R.id.flavor_image);
        // Picasso.with(getContext()).load("https://image.tmdb.org/t/p/w185/zSouWWrySXshPCT4t3UKCQGayyo.jpg").into(posterView);
-        Picasso.with(getContext()).load(moviesList.getImageurl()).into(posterView);
+        Picasso.with(getContext()).load(moviesList.getImageurl()).fit().into(posterView);
+        Log.v(LOG_TAG, "Setting image " + moviesList.getImageurl());
        // posterView.setImageResource(MoviesListAdapter.imageUrls);
 
 

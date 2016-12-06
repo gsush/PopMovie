@@ -1,10 +1,13 @@
 package com.example.android.popmovie;
 
+import android.util.Log;
+
 /**
  * Created by user on 11/23/2016.
  */
 
 public class MovieList {
+    private final String LOG_TAG = MovieList.class.getSimpleName();
     String mImageURl;
     String mtitle;
     String mrelease_date;
@@ -23,6 +26,7 @@ public class MovieList {
 //        this.mrating = Rating;
     }
     public String getImageurl() {
+        Log.v(LOG_TAG, "image in list " + mImageURl)    ;
         return mImageURl;
     }
     public String getTitle() {
