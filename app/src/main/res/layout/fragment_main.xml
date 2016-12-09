@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,11 +8,16 @@
 <GridView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:columnWidth="150dp"
-    android:numColumns="auto_fit"
-    android:verticalSpacing="0dp"
-    android:horizontalSpacing="0dp"
+    android:numColumns="2"
     android:stretchMode="columnWidth"
     android:id="@+id/flavors_grid">
 </GridView>
-    </FrameLayout>
+    </RelativeLayout>
+
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:columnWidth="150dp"-->
+    <!--android:numColumns="auto_fit"-->
+    <!--android:verticalSpacing="0dp"-->
+    <!--android:horizontalSpacing="0dp"-->
+    <!--android:stretchMode="columnWidth"-->

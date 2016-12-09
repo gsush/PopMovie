@@ -1,5 +1,6 @@
 package com.example.android.popmovie;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,7 +34,7 @@ import java.util.List;
  */
 
 public class MovieFragment extends Fragment {
-    private GridView mListMovies;
+    public static final String EXTRA_MOVIE_DATA = "EXTRA_MOVIE_DATA";
     private ArrayAdapter<MovieList> mAdapter;
     public MovieFragment() {
 
@@ -70,23 +70,16 @@ public class MovieFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootview = inflater.inflate(R.layout.fragment_main,container,false);
-        //listmovies = new MoviesListAdapter(getActivity(), Arrays.asList(MovieList));
-
-        // Get a reference to the ListView, and attach this adapter to it.
-//        mAdapter = new MoviesListAdapter(getActivity(),
-//                R.layout.movie_item,
-//                R.id.flavor_image,
-//                new ArrayList<String>());
         mAdapter = new MoviesListAdapter(getContext(),R.layout.movie_item);
-         GridView gridView = (GridView) rootview.findViewById(R.id.flavors_grid);
+         final GridView gridView = (GridView) rootview.findViewById(R.id.flavors_grid);
         gridView.setAdapter(mAdapter);
-       /* mListMovies = (GridView) getView().findViewById(R.id.flavors_grid);
-        mListMovies.setAdapter(mAdapter);*/
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                MovieList forecast = mAdapter.getItem(position);
-                Toast.makeText(getActivity(), (CharSequence) forecast,Toast.LENGTH_SHORT).show();
+                MovieList movie = mAdapter.getItem(position);
+                Intent intent = new Intent(getContext(),  DetailActivity.class);
+                intent.putExtra(MovieFragment.EXTRA_MOVIE_DATA,movie);
+                startActivity(intent);
             }
         });
         return rootview;
@@ -137,17 +130,17 @@ public class MovieFragment extends Fragment {
 
 
                imageURl = "https://image.tmdb.org/t/p/w185"+poster;
-                Log.v(LOG_TAG, "url for image: " + imageURl);
-                Log.v(LOG_TAG, "Title: " + title);
-                Log.v(LOG_TAG, "release date: " + release_date);
-                Log.v(LOG_TAG, "rating: " + rating);
-                Log.v(LOG_TAG, "synopsis: " + synopsis);
+//                Log.v(LOG_TAG, "url for image: " + imageURl);
+//                Log.v(LOG_TAG, "Title: " + title);
+//                Log.v(LOG_TAG, "release date: " + release_date);
+//                Log.v(LOG_TAG, "rating: " + rating);
+//                Log.v(LOG_TAG, "synopsis: " + synopsis);
 
-                //movie= new Movie(poster,title,release_date,synopsis,rating,imageURl);
+                //movie= new Movie(imageURl,title,release_date,synopsis,rating,imageURl);
               // movieArrayList.add(imageURl);
                 //movieArrayList.add(title);
                // return imageURl;
-                MovieList movieList = new MovieList(imageURl);//,title,release_date,synopsis,rating);
+                MovieList movieList = new MovieList(imageURl,title,release_date,synopsis,rating);
                 moviesdata.add(movieList);
                 //resultStr[i]= imageURl;
 

@@ -1,7 +1,6 @@
 package com.example.android.popmovie;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +21,7 @@ public class MoviesListAdapter extends ArrayAdapter<MovieList> {
     public MoviesListAdapter(Context context, int resources) {
         // Here, we initialize the ArrayAdapter's internal storage for the context and the list.
         // the second argument is used when the ArrayAdapter is populating a single TextView.
-        // Because this is a custom adapter for two TextViews and an ImageView, the adapter is not
+        // Because this is a custom adapter for an ImageView, the adapter is not
         // going to use this second argument, so it can be any value. Here, we used 0.
         super(context, 0, resources);
     }
@@ -30,7 +29,7 @@ public class MoviesListAdapter extends ArrayAdapter<MovieList> {
 
 
     @Override
-    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+    public View getView(int position, View convertView,  ViewGroup parent) {
 
         MovieList moviesList = getItem(position);
 
