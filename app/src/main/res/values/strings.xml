@@ -4,4 +4,5 @@
     <string name="most_popular">"Most Popular"</string>
     <string name="action_refresh">"Refresh"</string>
     <string name="title_activity_detail">"MovieDetails"</string>
+    <string name="settings">"Settings"</string>
 </resources>

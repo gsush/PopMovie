@@ -1,5 +1,6 @@
 package com.example.android.popmovie;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -42,15 +43,11 @@ public class MainActivity extends ActionBarActivity {
                int id = item.getItemId();
 
                        //noinspection SimplifiableIfStatement
-        if (id == R.id.most_popular) {
-            // when it is clicked. The app shows the most_popular movies
-            //openMostPopularMovies()
+        if (id == R.id.settings) {
+            // when it is clicked. The app shows the settings
+            Intent intent = new Intent(this,SettingsActivity.class);
+            startActivity(intent);
 
-            return true;
-        }
-        if (id == R.id.top_rated) {
-            // This should open the top_rated movies.
-            //openTopRatedMovies();
             return true;
         }
 

@@ -50,6 +50,13 @@ public class MovieFragment extends Fragment {
         inflater.inflate(R.menu.moviefragment,menu);
     }
     @Override
+    public void onStart() {
+        // this method is called by default on the start of the app .
+        FetchMoviesTask fetchMoviesTask = new FetchMoviesTask();
+        fetchMoviesTask.execute();
+        super.onStart();
+    }
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -69,10 +76,18 @@ public class MovieFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //This is the view of the view which is located within the fragment so
+        // wherever one start a activity actually a fragment is started and the
+        // the view of the fragment is decided by this method.
         View rootview = inflater.inflate(R.layout.fragment_main,container,false);
         mAdapter = new MoviesListAdapter(getContext(),R.layout.movie_item);
          final GridView gridView = (GridView) rootview.findViewById(R.id.flavors_grid);
         gridView.setAdapter(mAdapter);
+        /**
+         * This is the method when you click on any images there is the onitemclicklistener
+         * and wherever it is clicked an action is defined within the click .
+         * this method handles the click on the images.
+         */
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -85,8 +100,12 @@ public class MovieFragment extends Fragment {
         return rootview;
     }
 
-
-
+    /**
+     * This is the method that has like four methods within like doinbackground(),
+     * onpreExecute(),onPostExecute(),onProgressUpdate. It has the threads
+     * so all the networking code is running on the background thread
+     * and after that it is executed by the onPostExecute() method.
+     */
     public class FetchMoviesTask extends AsyncTask<Object, Void, List<MovieList>> {
       private final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
         /**
