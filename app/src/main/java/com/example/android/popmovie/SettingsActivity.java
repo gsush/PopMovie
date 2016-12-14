@@ -4,24 +4,28 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NavUtils;
+import android.view.MenuItem;
 
 /**
  * Created by user on 12/9/2016.
  */
 
-public class SettingsActivity extends PreferenceActivity
-        implements Preference.OnPreferenceChangeListener {
+public class SettingsActivity extends PreferenceFragment {
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       // setupActionBar();
         // Add 'general' preferences, defined in the XML file
-        // TODO: Add preferences from XML
+        addPreferencesFromResource(R.xml.pref_general);
 
         // For all preferences, attach an OnPreferenceChangeListener so the UI summary can be
         // updated when the preference changes.
-        // TODO: Add preferences
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_sort_key)));
     }
 
     /**
@@ -41,8 +45,9 @@ public class SettingsActivity extends PreferenceActivity
                         .getString(preference.getKey(), ""));
     }
 
+
     @Override
-    public boolean onPreferenceChange(Preference preference, Object value) {
+    public static boolean onPreferenceChange(Preference preference, Object value) {
         String stringValue = value.toString();
 
         if (preference instanceof ListPreference) {
@@ -53,11 +58,12 @@ public class SettingsActivity extends PreferenceActivity
             if (prefIndex >= 0) {
                 preference.setSummary(listPreference.getEntries()[prefIndex]);
             }
-        } else {
+        }
+        else {
             // For other preferences, set the summary to the value's simple string representation.
             preference.setSummary(stringValue);
         }
+
         return true;
     }
-
 }

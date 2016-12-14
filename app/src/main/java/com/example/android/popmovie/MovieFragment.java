@@ -1,9 +1,11 @@
 package com.example.android.popmovie;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -187,21 +189,36 @@ public class MovieFragment extends Fragment {
                 // Construct the URL for the themoviedb query
                 // Possible parameters are avaiable at OWM's forecast API page, at
                 // http://api.themoviedb.org/3/movie
-                //to build the uri
-                final String MOVIE_BASE_URL =
-                        "https://api.themoviedb.org/3/discover/movie?";
-               // final String SHOW_VIEW = "popular";
+                // to build the uri
+                SharedPreferences preference= PreferenceManager.getDefaultSharedPreferences(getContext());
+                String sortOrder = preference.getString(getString(R.string.pref_sort_label),
+                        getResources().getString(R.string.pref_order_pop));
+//                String sortOrder = preference.getInt(getString(R.string.pref_sort_label),
+//                        );
+
+                switch(sortOrder)
+                {   case "0":   sortOrder="popular";
+                    break;
+
+                    case "1":   sortOrder="top_rated";
+                        break;
+                }
+                //Log.v(LOG_TAG,"lkjk"+sortOrder);
+                    final String MOVIE_BASE_URL =
+                            "https://api.themoviedb.org/3/movie";
+
+                //final String SHOW_VIEW = "top_rated";
                 final String APPID_PARAM = "api_key";
                 final String LANGUAGE_PARAM = "language";
-                final String SORT_BY ="sort_by";
+                //final String SORT_BY ="sort_by";
 
                 // now how to use it in the uri.builder class
                 Uri builtUri = Uri.parse(MOVIE_BASE_URL)
                         .buildUpon()
-                        //.appendPath(SHOW_VIEW)
+                        .appendPath(sortOrder)
                         .appendQueryParameter(APPID_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
                         .appendQueryParameter(LANGUAGE_PARAM, "en-US")
-                        .appendQueryParameter(SORT_BY,"popularity.desc")// by popularity and another is vote_count.desc
+                        //.appendQueryParameter(SORT_BY,"popularity.desc")// by popularity and another is vote_count.desc
                         .build();
 
                 //now to link it with a url object
