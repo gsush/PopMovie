@@ -12,7 +12,7 @@
     <string name="pref_sort_label">Sort Order</string>
 
     <!-- Label for most popular option in sort order preference [CHAR LIMIT=25] -->
-    <string name="pref_sort_label_pop">popular</string>
+    <string name="pref_sort_label_pop">Popular</string>
     <!-- Value in SharedPreferences for popular sort order option [CHAR LIMIT=NONE] -->
     <string name="pref_order_pop" translatable="false">0</string>
     <!-- Label for most popular option in sort order preference [CHAR LIMIT=25] -->

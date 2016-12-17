@@ -191,7 +191,7 @@ public class MovieFragment extends Fragment {
                 // http://api.themoviedb.org/3/movie
                 // to build the uri
                 SharedPreferences preference= PreferenceManager.getDefaultSharedPreferences(getContext());
-                String sortOrder = preference.getString(getString(R.string.pref_sort_label),
+                String sortOrder = preference.getString(getString(R.string.pref_sort_key),
                         getResources().getString(R.string.pref_order_pop));
 //                String sortOrder = preference.getInt(getString(R.string.pref_sort_label),
 //                        );

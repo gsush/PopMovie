@@ -6,7 +6,7 @@
         android:title="@string/pref_sort_label"
         android:defaultValue="@string/pref_order_pop"
         android:entries="@array/pref_order_options"
-        android:entryValues="@array/pref_order_options"
+        android:entryValues="@array/pref_order_values"
         android:summary="Most popular "
         />
 

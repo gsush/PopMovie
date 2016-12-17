@@ -4,16 +4,13 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NavUtils;
-import android.view.MenuItem;
 
 /**
  * Created by user on 12/9/2016.
  */
 
-public class SettingsActivity extends PreferenceFragment {
+public class SettingsActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
 
 
     @Override
@@ -47,7 +44,7 @@ public class SettingsActivity extends PreferenceFragment {
 
 
     @Override
-    public static boolean onPreferenceChange(Preference preference, Object value) {
+    public  boolean onPreferenceChange(Preference preference, Object value) {
         String stringValue = value.toString();
 
         if (preference instanceof ListPreference) {
