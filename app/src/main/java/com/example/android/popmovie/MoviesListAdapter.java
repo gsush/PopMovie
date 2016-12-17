@@ -1,7 +1,6 @@
 package com.example.android.popmovie;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ public class MoviesListAdapter extends ArrayAdapter<MovieList> {
         // going to use this second argument, so it can be any value. Here, we used 0.
         super(context, 0, resources);
     }
-    // private String[] imageUrls;
 
 
     @Override
@@ -40,16 +38,9 @@ public class MoviesListAdapter extends ArrayAdapter<MovieList> {
 
         }
         ImageView posterView = (ImageView) convertView.findViewById(R.id.flavor_image);
-       // Picasso.with(getContext()).load("https://image.tmdb.org/t/p/w185/zSouWWrySXshPCT4t3UKCQGayyo.jpg").into(posterView);
+      // using the picasso library converting the image into gridview of images
         Picasso.with(getContext()).load(moviesList.getImageurl()).fit().into(posterView);
-        Log.v(LOG_TAG, "Setting image " + moviesList.getImageurl());
-       // posterView.setImageResource(MoviesListAdapter.imageUrls);
 
-
-//        Picasso.with(context)
-//                .load(imageUrls[position])
-//                .fit() // will explain later
-//                .into((ImageView) convertView);
 
         return convertView;
     }

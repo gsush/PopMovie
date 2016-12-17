@@ -62,7 +62,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="snehanghis "
+        android:text="synopsis"
         android:id="@+id/synopsis"
         android:layout_centerHorizontal="true"
         android:padding="16dp"/>

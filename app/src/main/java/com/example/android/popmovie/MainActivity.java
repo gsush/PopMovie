@@ -54,11 +54,4 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void openTopRatedMovies() {
-
-    }
-
-    private void openMostPopularMovies() {
-
-    }
 }

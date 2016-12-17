@@ -9,9 +9,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -47,10 +44,10 @@ public class MovieFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);// this will give the permission for the refresh button to inflate.
     }
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.moviefragment,menu);
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        inflater.inflate(R.menu.moviefragment,menu);
+//    }
     @Override
     public void onStart() {
         // this method is called by default on the start of the app .
@@ -58,20 +55,20 @@ public class MovieFragment extends Fragment {
         fetchMoviesTask.execute();
         super.onStart();
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_refresh) {
-            FetchMoviesTask fetchMoviesTask = new FetchMoviesTask();
-            fetchMoviesTask.execute();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//        if (id == R.id.action_refresh) {
+//            FetchMoviesTask fetchMoviesTask = new FetchMoviesTask();
+//            fetchMoviesTask.execute();
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//
+//    }
 
 
 
@@ -186,15 +183,11 @@ public class MovieFragment extends Fragment {
             //String language = "en-US";
             int numMov = 0;
             try {
-                // Construct the URL for the themoviedb query
-                // Possible parameters are avaiable at OWM's forecast API page, at
-                // http://api.themoviedb.org/3/movie
-                // to build the uri
+               // getting the saved value in the shared Preference and changing the preference according
+                // to the user .
                 SharedPreferences preference= PreferenceManager.getDefaultSharedPreferences(getContext());
                 String sortOrder = preference.getString(getString(R.string.pref_sort_key),
                         getResources().getString(R.string.pref_order_pop));
-//                String sortOrder = preference.getInt(getString(R.string.pref_sort_label),
-//                        );
 
                 switch(sortOrder)
                 {   case "0":   sortOrder="popular";
@@ -204,6 +197,11 @@ public class MovieFragment extends Fragment {
                         break;
                 }
                 //Log.v(LOG_TAG,"lkjk"+sortOrder);
+
+                // Construct the URL for the themoviedb query
+                // Possible parameters are avaiable at OWM's forecast API page, at
+                // http://api.themoviedb.org/3/movie
+                // to build the uri
                     final String MOVIE_BASE_URL =
                             "https://api.themoviedb.org/3/movie";
 
