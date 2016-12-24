@@ -19,11 +19,6 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.fragment, new MovieFragment())
                     .commit();
         }
-//        if (savedInstanceState == null) {
-//            getFragmentManager().beginTransaction() // removed the support from the getFragmentManager
-//                    .add(R.id.fragment, new MovieFragment())
-//                    .commit();
-//        }
 
     }
 
@@ -39,13 +34,13 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
-         // as you specify a parent activity in AndroidManifest.xml.
-               int id = item.getItemId();
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
-                       //noinspection SimplifiableIfStatement
+        //noinspection SimplifiableIfStatement
         if (id == R.id.settings) {
             // when it is clicked. The app shows the settings
-            Intent intent = new Intent(this,SettingsActivity.class);
+            Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
 
             return true;

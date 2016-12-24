@@ -44,10 +44,7 @@ public class MovieFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);// this will give the permission for the refresh button to inflate.
     }
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        inflater.inflate(R.menu.moviefragment,menu);
-//    }
+
     @Override
     public void onStart() {
         // this method is called by default on the start of the app .
@@ -55,22 +52,6 @@ public class MovieFragment extends Fragment {
         fetchMoviesTask.execute();
         super.onStart();
     }
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//        if (id == R.id.action_refresh) {
-//            FetchMoviesTask fetchMoviesTask = new FetchMoviesTask();
-//            fetchMoviesTask.execute();
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//
-//    }
-
-
 
 
     @Override
@@ -205,10 +186,9 @@ public class MovieFragment extends Fragment {
                     final String MOVIE_BASE_URL =
                             "https://api.themoviedb.org/3/movie";
 
-                //final String SHOW_VIEW = "top_rated";
+
                 final String APPID_PARAM = "api_key";
                 final String LANGUAGE_PARAM = "language";
-                //final String SORT_BY ="sort_by";
 
                 // now how to use it in the uri.builder class
                 Uri builtUri = Uri.parse(MOVIE_BASE_URL)
@@ -216,7 +196,6 @@ public class MovieFragment extends Fragment {
                         .appendPath(sortOrder)
                         .appendQueryParameter(APPID_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
                         .appendQueryParameter(LANGUAGE_PARAM, "en-US")
-                        //.appendQueryParameter(SORT_BY,"popularity.desc")// by popularity and another is vote_count.desc
                         .build();
 
                 //now to link it with a url object
