@@ -89,7 +89,11 @@ public class DetailActivity extends ActionBarActivity {
 
 
             mMovieTitle.setText(movie.getTitle());
-            Picasso.with(getContext()).load(movie.getImageurl()).into(mMoviePoster);
+            Picasso.with(getContext())
+                    .load(movie.getImageurl())
+                    .placeholder(R.drawable.image)
+                    .error(R.drawable.image_error)
+                    .into(mMoviePoster);
             mReleaseDate.setText("Released:\n"+movie.getRelease_date());
             mRatingAverage.setText(String.valueOf("Rating:\n"+movie.getRating()+"/10"));
             mSynopsis.setText("SYNOPSIS:\n"+movie.getSynopsis());
