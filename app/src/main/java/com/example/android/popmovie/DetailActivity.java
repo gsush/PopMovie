@@ -14,6 +14,10 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * Created by user on 12/7/2016.
  */
@@ -66,9 +70,13 @@ public class DetailActivity extends ActionBarActivity {
             setHasOptionsMenu(true);
         }
 
-
-        TextView mMovieTitle, mReleaseDate, mSynopsis, mRatingAverage;
-        ImageView mMoviePoster;
+        
+        @BindView(R.id.details) TextView mMovieTitle;
+        @BindView(R.id.poster) ImageView mMoviePoster;
+        @BindView(R.id.release_date) TextView mReleaseDate;
+        @BindView(R.id.rating) TextView mRatingAverage;
+        @BindView(R.id.synopsis) TextView mSynopsis;
+        private Unbinder unbinder;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,11 +84,8 @@ public class DetailActivity extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
             MovieList movie = getActivity().getIntent().getParcelableExtra(MovieFragment.EXTRA_MOVIE_DATA);
 
-            mMovieTitle = (TextView) rootView.findViewById(R.id.details);
-            mMoviePoster = (ImageView) rootView.findViewById(R.id.poster);
-            mReleaseDate = (TextView) rootView.findViewById(R.id.release_date);
-            mRatingAverage = (TextView) rootView.findViewById(R.id.rating);
-            mSynopsis = (TextView) rootView.findViewById(R.id.synopsis);
+
+            unbinder=ButterKnife.bind(this,rootView);
 
 
             mMovieTitle.setText(movie.getTitle());
@@ -89,6 +94,12 @@ public class DetailActivity extends ActionBarActivity {
             mRatingAverage.setText(String.valueOf("Rating:\n"+movie.getRating()+"/10"));
             mSynopsis.setText("SYNOPSIS:\n"+movie.getSynopsis());
             return rootView;
+        }
+
+        @Override
+        public void onDestroyView() {
+            super.onDestroyView();
+            unbinder.unbind();
         }
     }
 }

@@ -18,7 +18,7 @@ android {
         }
     }
     buildTypes.each {
-        it.buildConfigField 'String', 'THE_MOVIE_DB_API_KEY',"\"(put your key without brackets)\""
+        it.buildConfigField 'String', 'THE_MOVIE_DB_API_KEY',"\"4066178db02b89ef245ae29365f3f7ac\""
     }
 }
 
@@ -29,5 +29,6 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.jakewharton:butterknife:8.5.1'
     testCompile 'junit:junit:4.12'
 }
