@@ -1,6 +1,7 @@
 package com.example.android.popmovie;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class MoviesListAdapter extends ArrayAdapter<MovieList> {
         }
         ImageView posterView = (ImageView) convertView.findViewById(R.id.flavor_image);
       // using the picasso library converting the image into gridview of images
+       Log.v(LOG_TAG,"url "+ moviesList.getImageurl());
         Picasso.with(getContext()).load(moviesList.getImageurl()).fit().into(posterView);
 
 
