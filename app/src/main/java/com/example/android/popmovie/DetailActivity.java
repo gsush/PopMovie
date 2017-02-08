@@ -76,6 +76,7 @@ public class DetailActivity extends ActionBarActivity {
         @BindView(R.id.release_date) TextView mReleaseDate;
         @BindView(R.id.rating) TextView mRatingAverage;
         @BindView(R.id.synopsis) TextView mSynopsis;
+        @BindView(R.id.movieid) TextView mId;
         private Unbinder unbinder;
 
         @Override
@@ -94,9 +95,16 @@ public class DetailActivity extends ActionBarActivity {
                     .placeholder(R.drawable.image)
                     .error(R.drawable.image_error)
                     .into(mMoviePoster);
+//            Glide.with(getActivity())
+//                    .load(movie.getImageurl())
+//                    .crossFade()
+//                    .placeholder(R.drawable.image)
+//                    .error(R.drawable.image_error)
+//                    .into(mMoviePoster);
             mReleaseDate.setText("Released:\n"+movie.getRelease_date());
             mRatingAverage.setText(String.valueOf("Rating:\n"+movie.getRating()+"/10"));
-            mSynopsis.setText("SYNOPSIS:\n"+movie.getSynopsis());
+            mSynopsis.setText("SYNOPSIS:\n"+movie.getSynopsis());//https://www.youtube.com/watch?v=wRaV4SIQY8A
+            mId.setText(movie.getId());//https://img.youtube.com/vi/qV7btRCs3Wc/3.jpg
             return rootView;
         }
 

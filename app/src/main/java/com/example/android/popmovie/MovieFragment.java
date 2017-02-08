@@ -99,6 +99,7 @@ public class MovieFragment extends Fragment {
                 throws JSONException {
 
             //These are the names of the json Objects that we need to be extracted
+            final String MOVIE_ID = "id";
             final String OWN_RESULT = "results"; // contains arrays of objects
             final String MOVIE_POSTER = "poster_path";
             final String MOVIE_TITLE = "title";
@@ -126,6 +127,7 @@ public class MovieFragment extends Fragment {
                 String release_date = movies.getString(MOVIE_RELEASE_DATE);
                 String synopsis = movies.getString(MOVIE_SYNOPSIS);
                 String rating = movies.getString(MOVIE_VOTE);
+                String id = movies.getString(MOVIE_ID);
 
 
                imageURl = "https://image.tmdb.org/t/p/w185"+poster;
@@ -134,12 +136,13 @@ public class MovieFragment extends Fragment {
 //                Log.v(LOG_TAG, "release date: " + release_date);
 //                Log.v(LOG_TAG, "rating: " + rating);
 //                Log.v(LOG_TAG, "synopsis: " + synopsis);
+                  Log.v(LOG_TAG, "movieid: "+id);
 
                 //movie= new Movie(imageURl,title,release_date,synopsis,rating,imageURl);
               // movieArrayList.add(imageURl);
                 //movieArrayList.add(title);
                // return imageURl;
-                MovieList movieList = new MovieList(imageURl,title,release_date,synopsis,rating);
+                MovieList movieList = new MovieList(imageURl,title,release_date,synopsis,rating,id);
                 moviesdata.add(movieList);
                 //resultStr[i]= imageURl;
 

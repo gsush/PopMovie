@@ -42,6 +42,7 @@ public class MoviesListAdapter extends ArrayAdapter<MovieList> {
       // using the picasso library converting the image into gridview of images
        Log.v(LOG_TAG,"url "+ moviesList.getImageurl());
         Picasso.with(getContext()).load(moviesList.getImageurl()).fit().into(posterView);
+        //Glide.with(getContext()).load(moviesList.getImageurl()).crossFade().into(posterView);
 
 
         return convertView;

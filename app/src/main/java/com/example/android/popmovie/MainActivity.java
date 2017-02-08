@@ -3,11 +3,15 @@ package com.example.android.popmovie;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private static final boolean DEBUG = false; // Set this to false to disable logs.
 
 
     @Override
@@ -48,5 +52,34 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    //FOLLOWING FUNCTIONS FOR DEBUGGING PURPOSE ONLY.
+    @Override
+    protected void onStart() {
+        if (DEBUG) Log.i(LOG_TAG, "onStart()");
+        super.onStart();
+    }
 
+    @Override
+    protected void onResume() {
+        if (DEBUG) Log.i(LOG_TAG, "onResume()");
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        if (DEBUG) Log.i(LOG_TAG, "onPause()");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        if (DEBUG) Log.i(LOG_TAG, "onStop()");
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (DEBUG) Log.i(LOG_TAG, "onDestroy()");
+        super.onDestroy();
+    }
 }

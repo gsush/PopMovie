@@ -15,17 +15,19 @@ public class MovieList implements Parcelable {
     String mrelease_date;
     String msynopsis;
     String mrating;
+    String mid;
    // title,release_date,synopsis,rating
 
 //    public MovieList(int image) {
 //        this.image = image;
 //    }
-    public MovieList(String Imageurl,String Title,String Release_date,String Synopsis , String Rating ) {
+    public MovieList(String Imageurl,String Title,String Release_date,String Synopsis , String Rating, String Id ) {
         this.mImageURl = Imageurl;
         this.mtitle = Title;
         this.mrelease_date = Release_date;
         this.msynopsis = Synopsis;
         this.mrating = Rating;
+        this.mid = Id;
     }
     private MovieList(Parcel in){
         mImageURl=in.readString();
@@ -33,6 +35,7 @@ public class MovieList implements Parcelable {
         mrelease_date=in.readString();
         msynopsis=in.readString();
         mrating=in.readString();
+        mid=in.readString();
     }
 
 
@@ -55,6 +58,9 @@ public class MovieList implements Parcelable {
         return mrating;
     }
 
+    public String getId(){ return mid;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -67,6 +73,7 @@ public class MovieList implements Parcelable {
         parcel.writeString(mrelease_date);
         parcel.writeString(msynopsis);
         parcel.writeString(mrating);
+        parcel.writeString(mid);
     }
     public final static Parcelable.Creator<MovieList> CREATOR = new Parcelable.Creator<MovieList>() {
         @Override
