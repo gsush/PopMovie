@@ -1,8 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+        }
+    }
     compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId "com.example.android.popmovie"
         minSdkVersion 15
@@ -18,12 +22,12 @@ android {
         }
     }
     buildTypes.each {
-        it.buildConfigField 'String', 'THE_MOVIE_DB_API_KEY',"\"4066178db02b89ef245ae29365f3f7ac\""
+        it.buildConfigField 'String', 'THE_MOVIE_DB_API_KEY', "\"4066178db02b89ef245ae29365f3f7ac\""
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

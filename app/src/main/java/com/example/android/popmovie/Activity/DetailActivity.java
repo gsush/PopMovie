@@ -1,17 +1,26 @@
-package com.example.android.popmovie;
+package com.example.android.popmovie.Activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.android.popmovie.MovieFragment;
+import com.example.android.popmovie.MovieList;
+import com.example.android.popmovie.R;
+import com.example.android.popmovie.SettingsActivity;
+import com.example.android.popmovie.data.UpdateFavdb;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -23,6 +32,9 @@ import butterknife.Unbinder;
  */
 
 public class DetailActivity extends ActionBarActivity {
+
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private static final boolean DEBUG = false; // Set this to false to disable logs.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +77,9 @@ public class DetailActivity extends ActionBarActivity {
     public static class DetailMovieFragment extends Fragment {
         private final String LOG_TAG = DetailMovieFragment.class.getSimpleName();
         private String mMovieStr;
+        private Activity mActivity;
+        private MovieList mMovie;
+        ArrayAdapter<MovieList>  madapter;
 
         public  DetailMovieFragment() {
             setHasOptionsMenu(true);
@@ -77,13 +92,15 @@ public class DetailActivity extends ActionBarActivity {
         @BindView(R.id.rating) TextView mRatingAverage;
         @BindView(R.id.synopsis) TextView mSynopsis;
         @BindView(R.id.movieid) TextView mId;
+        @BindView(R.id.save_button) Button msaveButton;
+
         private Unbinder unbinder;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-            MovieList movie = getActivity().getIntent().getParcelableExtra(MovieFragment.EXTRA_MOVIE_DATA);
+            final MovieList movie = getActivity().getIntent().getParcelableExtra(MovieFragment.EXTRA_MOVIE_DATA);
 
 
             unbinder=ButterKnife.bind(this,rootView);
@@ -105,6 +122,13 @@ public class DetailActivity extends ActionBarActivity {
             mRatingAverage.setText(String.valueOf("Rating:\n"+movie.getRating()+"/10"));
             mSynopsis.setText("SYNOPSIS:\n"+movie.getSynopsis());//https://www.youtube.com/watch?v=wRaV4SIQY8A
             mId.setText(movie.getId());//https://img.youtube.com/vi/qV7btRCs3Wc/3.jpg
+            msaveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    UpdateFavdb updateFavdb = new UpdateFavdb();
+                    updateFavdb.execute();
+                }
+            });
             return rootView;
         }
 
@@ -113,5 +137,35 @@ public class DetailActivity extends ActionBarActivity {
             super.onDestroyView();
             unbinder.unbind();
         }
+    }
+    //FOLLOWING FUNCTIONS FOR DEBUGGING PURPOSE ONLY.
+    @Override
+    protected void onStart() {
+        if (DEBUG) Log.i(LOG_TAG, "onStart()");
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        if (DEBUG) Log.i(LOG_TAG, "onResume()");
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        if (DEBUG) Log.i(LOG_TAG, "onPause()");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        if (DEBUG) Log.i(LOG_TAG, "onStop()");
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (DEBUG) Log.i(LOG_TAG, "onDestroy()");
+        super.onDestroy();
     }
 }

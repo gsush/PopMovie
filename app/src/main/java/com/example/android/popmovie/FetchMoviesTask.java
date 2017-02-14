@@ -54,14 +54,15 @@ public class FetchMoviesTask extends AsyncTask<String, Void, List<MovieList>> {
      * then if it exist then we show a toast about it else we insert it .
      */
     public void addMovie(){
-        long db_id;
         //First check if the movie with the movieid already exists in the database
         Cursor movieCursor = mcontext.getContentResolver().query(
                 MovieContract.MovieEntry.CONTENT_URI,new String[]{MovieContract.MovieEntry._ID},
                 MovieContract.MovieEntry.COLUMN_MOVIE_ID + "=?",new String[]{String.valueOf(mMovie.getId())},null);
+        Log.v(LOG_TAG,movieCursor+"cursor");
         // if it exist then show a toast about it else insert it into the database
         if (movieCursor.moveToFirst()) {
             int locationIdIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry._ID);
+            Log.v(LOG_TAG,locationIdIndex+"loation");
             Toast.makeText(mcontext,"movie exists",Toast.LENGTH_LONG).show();
         } else {
             // Now that the content provider is set up, inserting rows of data is pretty simple.
@@ -83,6 +84,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, List<MovieList>> {
                     movieValues
             );
             Toast.makeText(mcontext,"Movie added to Fav",Toast.LENGTH_LONG).show();
+            Log.v(LOG_TAG,insertedUri+"uri");
             // The resulting URI contains the ID for the row.  Extract the movieId from the Uri.
             long movieRowId = ContentUris.parseId(insertedUri);
         }
@@ -134,19 +136,6 @@ public class FetchMoviesTask extends AsyncTask<String, Void, List<MovieList>> {
                 String synopsis = movies.getString(MOVIE_SYNOPSIS);
                 String rating = movies.getString(MOVIE_VOTE);
                 String id = movies.getString(MOVIE_ID);
-                //long db_id = addMovie(id, poster, synopsis, rating, release_date, title);
-
-//                ContentValues movieValues = new ContentValues();
-//
-//                // Then add the data, along with the corresponding name of the data type,
-//                // so the content provider knows what kind of value is being inserted.
-//                movieValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, id);
-//                movieValues.put(MovieContract.MovieEntry.COLUMN_POSTER_IMAGE, poster);
-//                movieValues.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, synopsis);
-//                movieValues.put(MovieContract.MovieEntry.COLUMN_AVERAGE_RATING, rating);
-//                movieValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, release_date);
-//                movieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, title);
-//                cVVector.add(movieValues);
 
 
                 imageURl = "https://image.tmdb.org/t/p/w185" + poster;
@@ -161,57 +150,14 @@ public class FetchMoviesTask extends AsyncTask<String, Void, List<MovieList>> {
                 // movieArrayList.add(imageURl);
                 //movieArrayList.add(title);
                 // return imageURl;
-                 MovieList movieList = new MovieList(imageURl,title,release_date,synopsis,rating,id);
-                 moviesdata.add(movieList);
+                MovieList movieList = new MovieList(imageURl, title, release_date, synopsis, rating, id);
+                moviesdata.add(movieList);
                 //resultStr[i]= imageURl;
 
             }
-            // add to database
-//            if (cVVector.size() > 0) {
-//                ContentValues[] cvArray = new ContentValues[cVVector.size()];
-//                cVVector.toArray(cvArray);
-//                mcontext.getContentResolver().bulkInsert(MovieContract.MovieEntry.CONTENT_URI, cvArray);
-//            }
-//
-//            // Sort order:  Ascending, by date.
-//            String sortOrder = MovieContract.MovieEntry.COLUMN_MOVIE_ID + " ASC";
-//            Uri MovieUri = MovieContract.MovieEntry.buildMovieUri(movie_id);
-//
-//            // Students: Uncomment the next lines to display what what you stored in the bulkInsert
-//            Cursor cur = mcontext.getContentResolver().query(MovieUri,
-//                    null, null, null, sortOrder);
-//
-//            cVVector = new Vector<ContentValues>(cur.getCount());
-//            if (cur.moveToFirst()) {
-//                do {
-//                    ContentValues cv = new ContentValues();
-//                    DatabaseUtils.cursorRowToContentValues(cur, cv);
-//                    cVVector.add(cv);
-//                } while (cur.moveToNext());
-//            }
-//
-//            Log.d(LOG_TAG, "FetchWeatherTask Complete. " + cVVector.size() + " Inserted");
-//
-//            List<MovieList> resultStrs = convertContentValuesToUXFormat(cVVector);
-//            return resultStrs;
-//        } catch (JSONException e) {
-//            Log.e(LOG_TAG, e.getMessage(), e);
-//            e.printStackTrace();
-//        }
         return moviesdata;
     }
 
-//     List<MovieList> convertContentValuesToUXFormat(Vector<ContentValues> cvv) {
-//        // return strings to keep ui functional now
-//         String[] resultStrs = new String[cvv.size()];
-//         for ( int i = 0; i < cvv.size(); i++ ) {
-//             ContentValues movieValues = cvv.elementAt(i);
-//             String image = movieValues.getAsString(MovieContract.MovieEntry.COLUMN_POSTER_IMAGE);
-//              resultStrs[i]= image;
-//         }
-//         //return resultStrs;
-//         return null;
-//    }
 
 
     @Override
@@ -266,7 +212,11 @@ public class FetchMoviesTask extends AsyncTask<String, Void, List<MovieList>> {
             //now to link it with a url object
             URL url = new URL(builtUri.toString());
             Log.v(LOG_TAG, "Built uri" + builtUri.toString());
-            addMovie();
+            //here we are going to get the trailer of the particular movie
+           // FetchMoviesTask mfetchmovie = new FetchMoviesTask().addMovie();
+
+
+
             //https://www.youtube.com/watch?v=wRaV4SIQY8A
             //https://api.themoviedb.org/3/movie/245891/reviews?api_key=4066178db02b89ef245ae29365f3f7ac&language=en-US
             //https://api.themoviedb.org/3/movie/245891/videos?api_key=4066178db02b89ef245ae29365f3f7ac&language=en-US

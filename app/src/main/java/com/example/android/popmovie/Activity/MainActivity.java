@@ -1,4 +1,4 @@
-package com.example.android.popmovie;
+package com.example.android.popmovie.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.example.android.popmovie.MovieFragment;
+import com.example.android.popmovie.R;
+import com.example.android.popmovie.SettingsActivity;
 
 
 public class MainActivity extends ActionBarActivity {

@@ -37,7 +37,7 @@ public class MovieProvider extends ContentProvider {
         //Use the addUri function to match each of the types.
         // for each type of Uri you want to add, create a corresponding code.
         matcher.addURI(authority,MovieContract.PATH_MOVIE,FAV_MOVIES);
-        matcher.addURI(authority,MovieContract.PATH_MOVIE+"/#",FAV_MOVIES_ITEMS);
+        matcher.addURI(authority,MovieContract.PATH_MOVIE+"/*",FAV_MOVIES_ITEMS);
         return matcher;
     }
     /*

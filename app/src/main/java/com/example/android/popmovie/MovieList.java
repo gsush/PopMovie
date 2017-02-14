@@ -9,13 +9,13 @@ import android.util.Log;
  */
 
 public class MovieList implements Parcelable {
-    private final String LOG_TAG = MovieList.class.getSimpleName();
+    public final String LOG_TAG = MovieList.class.getSimpleName();
     String mImageURl;
     String mtitle;
     String mrelease_date;
     String msynopsis;
     String mrating;
-    String mid;
+     String mid;
    // title,release_date,synopsis,rating
 
 //    public MovieList(int image) {
@@ -58,7 +58,7 @@ public class MovieList implements Parcelable {
         return mrating;
     }
 
-    public String getId(){ return mid;
+    public  String getId(){ return mid;
     }
 
     @Override
