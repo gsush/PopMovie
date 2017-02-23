@@ -1,21 +1,19 @@
-package com.example.android.popmovie;
+package com.example.android.popmovie.Network;
 
 /**
  * Created by user on 2/10/2017.
  */
 
 
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
-import com.example.android.popmovie.data.MovieContract;
+import com.example.android.popmovie.BuildConfig;
+import com.example.android.popmovie.MovieList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,50 +45,50 @@ public class FetchMoviesTask extends AsyncTask<String, Void, List<MovieList>> {
         mAdapter = MovieAdapter;
     }
 
-    /**
-     * Helper method to help insertion of a new movie in the db.
-     * This is the method which gets called when we clink on the save button and then
-     * it checks with the database and the data that is the parceable. it first query and
-     * then if it exist then we show a toast about it else we insert it .
-     */
-    public void addMovie(){
-        //First check if the movie with the movieid already exists in the database
-        Cursor movieCursor = mcontext.getContentResolver().query(
-                MovieContract.MovieEntry.CONTENT_URI,new String[]{MovieContract.MovieEntry._ID},
-                MovieContract.MovieEntry.COLUMN_MOVIE_ID + "=?",new String[]{String.valueOf(mMovie.getId())},null);
-        Log.v(LOG_TAG,movieCursor+"cursor");
-        // if it exist then show a toast about it else insert it into the database
-        if (movieCursor.moveToFirst()) {
-            int locationIdIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry._ID);
-            Log.v(LOG_TAG,locationIdIndex+"loation");
-            Toast.makeText(mcontext,"movie exists",Toast.LENGTH_LONG).show();
-        } else {
-            // Now that the content provider is set up, inserting rows of data is pretty simple.
-            // First create a ContentValues object to hold the data you want to insert.
-            ContentValues movieValues = new ContentValues();
-
-            // Then add the data, along with the corresponding name of the data type,
-            // so the content provider knows what kind of value is being inserted.
-            movieValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, mMovie.getId());
-            movieValues.put(MovieContract.MovieEntry.COLUMN_POSTER_IMAGE, mMovie.getImageurl());
-            movieValues.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, mMovie.getSynopsis());
-            movieValues.put(MovieContract.MovieEntry.COLUMN_AVERAGE_RATING, mMovie.getRating());
-            movieValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, mMovie.getRelease_date());
-            movieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, mMovie.getTitle());
-
-            // Finally, insert location data into the database.
-            Uri insertedUri = mcontext.getContentResolver().insert(
-                    MovieContract.MovieEntry.CONTENT_URI,
-                    movieValues
-            );
-            Toast.makeText(mcontext,"Movie added to Fav",Toast.LENGTH_LONG).show();
-            Log.v(LOG_TAG,insertedUri+"uri");
-            // The resulting URI contains the ID for the row.  Extract the movieId from the Uri.
-            long movieRowId = ContentUris.parseId(insertedUri);
-        }
-        movieCursor.close();
-
-    }
+//    /**
+//     * Helper method to help insertion of a new movie in the db.
+//     * This is the method which gets called when we clink on the save button and then
+//     * it checks with the database and the data that is the parceable. it first query and
+//     * then if it exist then we show a toast about it else we insert it .
+//     */
+//    public void addMovie(){
+//        //First check if the movie with the movieid already exists in the database
+//        Cursor movieCursor = mcontext.getContentResolver().query(
+//                MovieContract.MovieEntry.CONTENT_URI,new String[]{MovieContract.MovieEntry._ID},
+//                MovieContract.MovieEntry.COLUMN_MOVIE_ID + "=?",new String[]{String.valueOf(mMovie.getId())},null);
+//        Log.v(LOG_TAG,movieCursor+"cursor");
+//        // if it exist then show a toast about it else insert it into the database
+//        if (movieCursor.moveToFirst()) {
+//            int locationIdIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry._ID);
+//            Log.v(LOG_TAG,locationIdIndex+"loation");
+//            Toast.makeText(mcontext,"movie exists",Toast.LENGTH_LONG).show();
+//        } else {
+//            // Now that the content provider is set up, inserting rows of data is pretty simple.
+//            // First create a ContentValues object to hold the data you want to insert.
+//            ContentValues movieValues = new ContentValues();
+//
+//            // Then add the data, along with the corresponding name of the data type,
+//            // so the content provider knows what kind of value is being inserted.
+//            movieValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, mMovie.getId());
+//            movieValues.put(MovieContract.MovieEntry.COLUMN_POSTER_IMAGE, mMovie.getImageurl());
+//            movieValues.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, mMovie.getSynopsis());
+//            movieValues.put(MovieContract.MovieEntry.COLUMN_AVERAGE_RATING, mMovie.getRating());
+//            movieValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, mMovie.getRelease_date());
+//            movieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, mMovie.getTitle());
+//
+//            // Finally, insert location data into the database.
+//            Uri insertedUri = mcontext.getContentResolver().insert(
+//                    MovieContract.MovieEntry.CONTENT_URI,
+//                    movieValues
+//            );
+//            Toast.makeText(mcontext,"Movie added to Fav",Toast.LENGTH_LONG).show();
+//            Log.v(LOG_TAG,insertedUri+"uri");
+//            // The resulting URI contains the ID for the row.  Extract the movieId from the Uri.
+//            long movieRowId = ContentUris.parseId(insertedUri);
+//        }
+//        movieCursor.close();
+//
+//    }
 
 
 
@@ -108,6 +106,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, List<MovieList>> {
         final String MOVIE_ID = "id";
         final String OWN_RESULT = "results"; // contains arrays of objects
         final String MOVIE_POSTER = "poster_path";
+        final String BACK_POSTER = "backdrop_path";
         final String MOVIE_TITLE = "title";
         final String MOVIE_VOTE = "vote_average";
         final String MOVIE_SYNOPSIS = "overview";
@@ -123,6 +122,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, List<MovieList>> {
             JSONArray movieArray = movieJson.getJSONArray(OWN_RESULT);
             Vector<ContentValues> cVVector = new Vector<ContentValues>(movieArray.length());
             String imageURl;
+            String posterURl;
 
 
             for (int i = 0; i < movieArray.length(); i++) {
@@ -131,14 +131,16 @@ public class FetchMoviesTask extends AsyncTask<String, Void, List<MovieList>> {
                 JSONObject movies = movieArray.getJSONObject(i);
 
                 String poster = movies.getString(MOVIE_POSTER);
+                String backposter = movies.getString(BACK_POSTER);
                 String title = movies.getString(MOVIE_TITLE);
                 String release_date = movies.getString(MOVIE_RELEASE_DATE);
                 String synopsis = movies.getString(MOVIE_SYNOPSIS);
                 String rating = movies.getString(MOVIE_VOTE);
-                String id = movies.getString(MOVIE_ID);
+                int id = movies.getInt(MOVIE_ID);
 
 
-                imageURl = "https://image.tmdb.org/t/p/w185" + poster;
+                imageURl = "https://image.tmdb.org/t/p/w185" + poster; //w185
+                posterURl = "https://image.tmdb.org/t/p/w500" + backposter; //720
 //                Log.v(LOG_TAG, "url for image: " + imageURl);
 //                Log.v(LOG_TAG, "Title: " + title);
 //                Log.v(LOG_TAG, "release date: " + release_date);
@@ -150,7 +152,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, List<MovieList>> {
                 // movieArrayList.add(imageURl);
                 //movieArrayList.add(title);
                 // return imageURl;
-                MovieList movieList = new MovieList(imageURl, title, release_date, synopsis, rating, id);
+                MovieList movieList = new MovieList(imageURl, title, release_date, synopsis, rating, id,posterURl);
                 moviesdata.add(movieList);
                 //resultStr[i]= imageURl;
 
