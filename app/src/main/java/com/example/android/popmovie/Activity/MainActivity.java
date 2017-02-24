@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.android.popmovie.MovieFragment;
+import com.example.android.popmovie.Fragment.MovieFragment;
 import com.example.android.popmovie.R;
 import com.example.android.popmovie.SettingsActivity;
 
@@ -16,6 +16,7 @@ public class MainActivity extends ActionBarActivity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final boolean DEBUG = false; // Set this to false to disable logs.
+
 
 
     @Override
@@ -28,6 +29,17 @@ public class MainActivity extends ActionBarActivity {
                     .commit();
         }
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        //client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+//        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.save_button);
+//        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view,"show new thigs",Snackbar.LENGTH_LONG)
+//                        .setAction("Action",null).show();
+//            }
+//        });
     }
 
     @Override
@@ -56,8 +68,11 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
     //FOLLOWING FUNCTIONS FOR DEBUGGING PURPOSE ONLY.
     @Override
+
     protected void onStart() {
         if (DEBUG) Log.i(LOG_TAG, "onStart()");
         super.onStart();
@@ -86,4 +101,5 @@ public class MainActivity extends ActionBarActivity {
         if (DEBUG) Log.i(LOG_TAG, "onDestroy()");
         super.onDestroy();
     }
+
 }

@@ -18,7 +18,7 @@ public class MovieProvider extends ContentProvider {
      * The "s" in this variable name signigies that this
      * Urimatcher is a static member variable of MovieProvder
      */
-    private static final UriMatcher sUriMatcher = buildUriMatcher();
+    public static final UriMatcher sUriMatcher = buildUriMatcher();
     private MovieDbHelper mOpenHelper;
     private static final String TAG = MovieProvider.class.getSimpleName();
 

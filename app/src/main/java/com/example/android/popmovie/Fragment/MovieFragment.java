@@ -15,7 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
 import com.example.android.popmovie.Activity.DetailActivity;
-import com.example.android.popmovie.FetchMoviesTask;
+import com.example.android.popmovie.Network.FetchMoviesTask;
 import com.example.android.popmovie.MovieList;
 import com.example.android.popmovie.MoviesListAdapter;
 import com.example.android.popmovie.R;

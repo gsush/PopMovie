@@ -5,4 +5,12 @@
     <color name="colorAccent">#FF4081</color>
     <color name="BarColor">#009688</color>
     <color name="Text">#FFFFFF</color>
+    <color name="app_primary">#1976D2</color>
+    <color name="app_primary_dark">#1565C0</color>
+    <color name="grey">#DDDDDD</color>
+    <color name="light_grey">#EEEEEE</color>
+    <color name="white_transparent">#99FFFFFF</color>
+    <color name="black">#000</color>
+    <color name="background">#95fefefe</color>
+    <color name="transparent">#00FEFEFE</color>
 </resources>

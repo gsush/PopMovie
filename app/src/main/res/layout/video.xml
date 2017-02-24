@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground">
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/video_thumb"
+        android:layout_width="@dimen/video_width"
+        android:layout_height="@dimen/video_height"
+        android:layout_marginRight="4dp"
+        android:contentDescription="content"
+        />
+
+</FrameLayout>

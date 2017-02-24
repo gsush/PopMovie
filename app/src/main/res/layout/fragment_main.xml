@@ -1,25 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MovieFragment">
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--tools:context=".MovieFragment">-->
 
-<GridView
+<!--<GridView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:numColumns="auto_fit"-->
+    <!--android:stretchMode="columnWidth"-->
+    <!--android:id="@+id/flavors_grid">-->
+<!--</GridView>-->
+    <!--&lt;!&ndash; Empty view is only visible when the list has no items. &ndash;&gt;-->
+    <!--<TextView-->
+        <!--android:id="@+id/empty_view"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:textAppearance="?android:textAppearanceMedium"/>-->
+
+    <!--</RelativeLayout>-->
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/tools"
+    android:id="@+id/main_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:numColumns="auto_fit"
-    android:stretchMode="columnWidth"
-    android:id="@+id/flavors_grid">
-</GridView>
-    <!-- Empty view is only visible when the list has no items. -->
-    <TextView
-        android:id="@+id/empty_view"
-        android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textAppearance="?android:textAppearanceMedium"/>
-
-    </RelativeLayout>
+        android:theme="@style/AppTheme">
 
 
+    </android.support.design.widget.AppBarLayout>
+
+
+    <include layout="@layout/content_main"/>
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/menu_red"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        fab:menu_labels_ellipsize="end"
+        fab:menu_labels_singleLine="true"
+        fab:menu_backgroundColor="#ccffffff"
+        fab:menu_fab_label="Menu label">
+
+    </com.github.clans.fab.FloatingActionMenu>
+
+</android.support.design.widget.CoordinatorLayout>

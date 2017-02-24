@@ -15,19 +15,21 @@ public class MovieList implements Parcelable {
     String mrelease_date;
     String msynopsis;
     String mrating;
-     String mid;
+    int mid;
+    String mbackUrl;
    // title,release_date,synopsis,rating
 
 //    public MovieList(int image) {
 //        this.image = image;
 //    }
-    public MovieList(String Imageurl,String Title,String Release_date,String Synopsis , String Rating, String Id ) {
+    public MovieList(String Imageurl,String Title,String Release_date,String Synopsis , String Rating, int Id,String PosterUrl ) {
         this.mImageURl = Imageurl;
         this.mtitle = Title;
         this.mrelease_date = Release_date;
         this.msynopsis = Synopsis;
         this.mrating = Rating;
         this.mid = Id;
+        this.mbackUrl=PosterUrl;
     }
     private MovieList(Parcel in){
         mImageURl=in.readString();
@@ -35,7 +37,8 @@ public class MovieList implements Parcelable {
         mrelease_date=in.readString();
         msynopsis=in.readString();
         mrating=in.readString();
-        mid=in.readString();
+        mid=in.readInt();
+        mbackUrl=in.readString();
     }
 
 
@@ -43,6 +46,10 @@ public class MovieList implements Parcelable {
     public String getImageurl() {
         Log.v(LOG_TAG, "image in list " + mImageURl);
         return mImageURl;
+    }
+    public String getBackPoster() {
+        Log.v(LOG_TAG,"back poster "+ mbackUrl);
+        return  mbackUrl;
     }
 
     public String getTitle() {
@@ -58,7 +65,7 @@ public class MovieList implements Parcelable {
         return mrating;
     }
 
-    public  String getId(){ return mid;
+    public int getId(){ return mid;
     }
 
     @Override
@@ -73,7 +80,8 @@ public class MovieList implements Parcelable {
         parcel.writeString(mrelease_date);
         parcel.writeString(msynopsis);
         parcel.writeString(mrating);
-        parcel.writeString(mid);
+        parcel.writeInt(mid);
+        parcel.writeString(mbackUrl);
     }
     public final static Parcelable.Creator<MovieList> CREATOR = new Parcelable.Creator<MovieList>() {
         @Override

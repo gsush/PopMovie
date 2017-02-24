@@ -33,6 +33,7 @@ public class MovieContract {
         public static final String TABLE_NAME = "movies";
 
         //creating column for the database
+        // movie id as returened by api
         public static final String COLUMN_MOVIE_ID = "movie_id";
         public static final String COLUMN_POSTER_IMAGE = "poster_image";
         public static final String COLUMN_OVERVIEW = "overview";

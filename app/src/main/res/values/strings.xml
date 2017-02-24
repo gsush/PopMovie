@@ -19,4 +19,10 @@
     <string name="pref_sort_label_top">Top Rated</string>
     <!-- Value in SharedPreferences for popular sort order option [CHAR LIMIT=NONE] -->
     <string name="pref_order_top" translatable="false">1</string>
+    <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
+    <string name="content_desc_video">Trailer</string>
+    <string name="trailer_thumb_base_url">http://img.youtube.com/vi/</string>
+    <string name="trailer_base_url">"http://www.youtube.com/watch?v="</string>
+    <string name="share_trailer">Share trailer via..</string>
+    <string name="trailer_share_text">Checkout the trailer of </string>
 </resources>

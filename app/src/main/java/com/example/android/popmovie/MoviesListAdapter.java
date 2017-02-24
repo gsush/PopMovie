@@ -41,7 +41,7 @@ public class MoviesListAdapter extends ArrayAdapter<MovieList> {
         ImageView posterView = (ImageView) convertView.findViewById(R.id.flavor_image);
       // using the picasso library converting the image into gridview of images
        Log.v(LOG_TAG,"url "+ moviesList.getImageurl());
-        Picasso.with(getContext()).load(moviesList.getImageurl()).fit().into(posterView);
+        Picasso.with(getContext()).load(moviesList.getImageurl()).placeholder(R.drawable.square_placeholder).fit().into(posterView);
         //Glide.with(getContext()).load(moviesList.getImageurl()).crossFade().into(posterView);
 
 
