@@ -48,7 +48,7 @@ public class MovieProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         mOpenHelper =  new MovieDbHelper(getContext());
-        return false;
+        return true;
     }
 
 
@@ -121,6 +121,10 @@ public class MovieProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri: "+uri);
         }
+        //calling notifyChange on the Content Resolver
+        //to notify all of the registered observers.
+        //Note : We must use the passed in uri & not the returnUri,
+        //as that will not correctly notify our cursors of the same.
         getContext().getContentResolver().notifyChange(uri,null);
         return null;
     }

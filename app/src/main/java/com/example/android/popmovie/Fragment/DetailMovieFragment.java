@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,16 +27,19 @@ import com.example.android.popmovie.MovieList;
 import com.example.android.popmovie.Network.FetchReviewsTask;
 import com.example.android.popmovie.Network.FetchTrailersTask;
 import com.example.android.popmovie.R;
+import com.example.android.popmovie.data.UpdateFavdb;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static com.example.android.popmovie.data.UpdateFavdb.ADDED_TO_FAVORITE;
+
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DetailMovieFragment extends Fragment implements FetchTrailersTask.Event,FetchReviewsTask.Event,View.OnClickListener {
+public class DetailMovieFragment extends Fragment implements FetchTrailersTask.Event,FetchReviewsTask.Event,View.OnClickListener, UpdateFavdb.DBUpdateListener {
     View.OnClickListener monClickListener;
     private final String LOG_TAG = DetailMovieFragment.class.getSimpleName();
     private static final boolean DEBUG = false; // Set this to false to disable logs.
@@ -59,6 +63,8 @@ public class DetailMovieFragment extends Fragment implements FetchTrailersTask.E
     @BindView(R.id.trailers)            ViewGroup viewTrailers;
     @BindView(R.id.reviews_header) TextView textViewReviewHeader;
     @BindView(R.id.reviews) ViewGroup viewReviews;
+    @BindView(R.id.share) FloatingActionButton favshare;
+    @BindView(R.id.fav) FloatingActionButton favsave;
 
     private Unbinder unbinder;
 
@@ -66,7 +72,7 @@ public class DetailMovieFragment extends Fragment implements FetchTrailersTask.E
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-        final MovieList movie = getActivity().getIntent().getParcelableExtra(MovieFragment.EXTRA_MOVIE_DATA);
+       final MovieList movie = getActivity().getIntent().getParcelableExtra(MovieFragment.EXTRA_MOVIE_DATA);
 
 
         Toolbar toolbar = (Toolbar)rootView.findViewById(R.id.toolbar);
@@ -115,6 +121,7 @@ public class DetailMovieFragment extends Fragment implements FetchTrailersTask.E
     private void showTrailers(Extras extras) {
         int numTrailers = extras.getTrailersNum();
         boolean hasTrailers = numTrailers>0;
+        favshare.setVisibility(hasTrailers ? View.VISIBLE : View.GONE);
         txtViewTrailersHeader.setVisibility(hasTrailers ? View.VISIBLE : View.GONE);
         scrollViewTrailers.setVisibility(hasTrailers ? View.VISIBLE : View.GONE);
         if (hasTrailers) {
@@ -146,7 +153,7 @@ public class DetailMovieFragment extends Fragment implements FetchTrailersTask.E
                     .centerCrop()
                     .into(thumbView);
             viewTrailers.addView(thumbContainer);
-            //favShare.setOnClickListener(this);
+            favshare.setOnClickListener(this);
         }
     }
     private void showReviews(Extras extras){
@@ -174,6 +181,67 @@ public class DetailMovieFragment extends Fragment implements FetchTrailersTask.E
             viewReviews.addView(reviewContainer);
 
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        if(view.getId()==R.id.video_thumb){
+            String videoUrl = (String) view.getTag();
+            try{
+                Intent playVideoIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoUrl));
+                startActivity(playVideoIntent);
+            }catch (ActivityNotFoundException ex){
+                Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse(videoUrl));
+                startActivity(intent);
+            }
+        }
+        else if(view.getId()==R.id.share){
+            MovieList movie = getActivity().getIntent().getParcelableExtra(MovieFragment.EXTRA_MOVIE_DATA);
+            String trailer_key = extras.getTrailerAtIndex((int)0).getSource();
+            String TRAILER_BASE_URL=getActivity().getString(R.string.trailer_base_url);
+            String SHARE_TRAILER_TEXT=getActivity().getString(R.string.trailer_share_text);
+            String APP_HASHTAG=getActivity().getString(R.string.app_hashtag);
+            String trailer_url= TRAILER_BASE_URL+trailer_key;
+            String movieName = movie.getTitle();
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, SHARE_TRAILER_TEXT + " " + movieName + " | " + trailer_url + " "+APP_HASHTAG);
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.share_trailer)));
+        }
+        else if (view.getId()==R.id.fav){
+            MovieList mMovie = getActivity().getIntent().getParcelableExtra(MovieFragment.EXTRA_MOVIE_DATA);
+            //Update favorite movie database accordingly
+            //If movie exists in fav db, delete it, Otherwise save it in db
+            UpdateFavdb favouriteMovieDBTask = new UpdateFavdb(getActivity(), mMovie,this);
+            favouriteMovieDBTask.execute();
+        }
+
+    }
+    public void onSuccess(final int operationType) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String operation;
+                if (operationType == ADDED_TO_FAVORITE) {
+                    operation = "added to favorite";
+                    favsave.setImageResource(R.drawable.ic_star);
+                    //mSPManagerFavMovies.putBoolean(mMovie.getId(), true);
+                } else {
+                    operation = "removed from favorite";
+                    favshare.setImageResource(R.drawable.ic_star_nfilled);
+                    //mSPManagerFavMovies.putBoolean(mMovie.getId(), false);
+                }
+
+                //NetworkUtils.showSnackbar(mCoordinatorLayout, mMovie.getTitle() + " " + operation);
+            }
+        });
+    }
+
+    @Override
+    public void onFailure() {
+        //NetworkUtils.showSnackbar(mCoordinatorLayout, mMovie.getTitle() + " " + somethingWentWrong);
     }
 
     @Override
@@ -211,22 +279,6 @@ public class DetailMovieFragment extends Fragment implements FetchTrailersTask.E
     public void onDestroy() {
         if (DEBUG) Log.i(LOG_TAG, "onDestroy()");
         super.onDestroy();
-    }
-
-    @Override
-    public void onClick(View view) {
-
-        if(view.getId()==R.id.video_thumb){
-            String videoUrl = (String) view.getTag();
-            try{
-                Intent playVideoIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoUrl));
-                startActivity(playVideoIntent);
-            }catch (ActivityNotFoundException ex){
-                Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse(videoUrl));
-                startActivity(intent);
-            }
-        }
-        else return;
     }
 }
 

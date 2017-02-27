@@ -25,4 +25,5 @@
     <string name="trailer_base_url">"http://www.youtube.com/watch?v="</string>
     <string name="share_trailer">Share trailer via..</string>
     <string name="trailer_share_text">Checkout the trailer of </string>
+    <string name="app_hashtag">#PopularMovies</string>
 </resources>

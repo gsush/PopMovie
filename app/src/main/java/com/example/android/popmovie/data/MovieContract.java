@@ -40,6 +40,7 @@ public class MovieContract {
         public static final String COLUMN_AVERAGE_RATING = "average_rating";
         public static final String COLUMN_RELEASE_DATE = "release_date";
         public static final String COLUMN_TITLE = "title";
+        public static final String COLUMN_BACK_POSTER = "back_poster";
 
         public static Uri buildMovieUri(long id){
             return ContentUris.withAppendedId(CONTENT_URI,id);

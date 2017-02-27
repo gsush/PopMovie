@@ -185,7 +185,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_star"
+        android:src="@drawable/ic_star_nfilled"
         android:clickable="true"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end" />
@@ -195,7 +195,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="81dp"
         app:elevation="6dp"
-        android:src="@drawable/ic_menu"
+        android:src="@drawable/share"
         android:clickable="true"
         app:layout_anchor="@id/app_bar"
         android:scaleType="centerCrop"

@@ -30,7 +30,8 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                         MovieEntry.COLUMN_RELEASE_DATE + "TEXT NOT NULL," +
                         MovieEntry.COLUMN_POSTER_IMAGE + "TEXT NOT NULL," +
                         MovieEntry.COLUMN_OVERVIEW + "TEXT NOT NULL," +
-                        MovieEntry.COLUMN_AVERAGE_RATING + "REAL NOT NULL)";
+                        MovieEntry.COLUMN_AVERAGE_RATING + "REAL NOT NULL,"+
+                        MovieEntry.COLUMN_BACK_POSTER + "REAL NOT NULL )";
         /**
          * After we've spelled out our SQLite table creation statement above, we actually execute
          * that SQL with the execSQL method of our SQLite database object.
